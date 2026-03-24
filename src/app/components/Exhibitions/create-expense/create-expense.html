@@ -1,0 +1,41 @@
+
+<div class="modal-backdrop">
+
+  <div class="modal">
+
+    <h2>Add Expense</h2>
+
+    <form [formGroup]="expenseForm" (ngSubmit)="submit()">
+
+      <!-- Name -->
+      <div class="form-group">
+        <label>Expense Name</label>
+        <input type="text" formControlName="name" placeholder="Enter expense name" />
+
+        <div class="error" *ngIf="submitted && f['name'].errors">
+          <small *ngIf="f['name'].errors['required']">Name is required</small>
+        </div>
+      </div>
+
+      <!-- Cost -->
+      <div class="form-group">
+        <label>Cost</label>
+        <input type="number" formControlName="cost" placeholder="Enter amount" />
+
+        <div class="error" *ngIf="submitted && f['cost'].errors">
+          <small *ngIf="f['cost'].errors['required']">Cost is required</small>
+          <small *ngIf="f['cost'].errors['min']">Cost must be greater than 0</small>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="actions">
+        <button type="button" class="cancel-btn" (click)="close()">Cancel</button>
+        <button type="submit" class="save-btn">Save</button>
+      </div>
+
+    </form>
+
+  </div>
+
+</div>

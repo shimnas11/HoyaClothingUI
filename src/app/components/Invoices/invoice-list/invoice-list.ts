@@ -1,10 +1,8 @@
-
 import { CreateInvoice } from '../create-invoice/create-invoice';
-import { Component, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InvoiceService } from '../../../services/invoice-service';
 import { Subscription } from 'rxjs';
-
 
 @Component({
   selector: 'app-invoice-list',
@@ -14,41 +12,81 @@ import { Subscription } from 'rxjs';
   styleUrl: './invoice-list.css',
 })
 export class InvoiceList implements OnInit, OnDestroy {
-  // invoices: any[] = [];
+
   showModal = false;
-  invoices = signal<any[]>([]); // start empty
+
+  // ✅ DATA SIGNAL
+  invoices = signal<any[]>([]);
+
+  // ✅ EXPAND STATE
   expandedInvoice = signal<any | null>(null);
+
   private sub!: Subscription;
-  constructor(private invoiceService: InvoiceService) { }
+
+  // ✅ PAGINATION SIGNALS
+  currentPage = signal(1);
+  pageSize = 5;
+
+  // ✅ PAGINATED DATA
+  paginatedInvoices = computed(() => {
+    const data = this.invoices();
+
+    const start = (this.currentPage() - 1) * this.pageSize;
+    return data.slice(start, start + this.pageSize);
+  });
+
+  totalPages = computed(() =>
+    Math.ceil(this.invoices().length / this.pageSize)
+  );
+
+  constructor(private invoiceService: InvoiceService) {}
 
   ngOnInit(): void {
-    // now this.invoiceService is initialized
-    // optional, already empty
-
-    // Option 1: subscribe manually
     this.loadInvoices();
-
-    // Option 2: use toSignal (recommended)
-    // this.invoices = toSignal(this.invoiceService.getInvoices(), { initialValue: [] });
   }
 
   loadInvoices() {
     this.invoices.set([]);
+
     this.sub = this.invoiceService.getInvoices().subscribe({
       next: (data) => {
-
-        this.invoices.set(
-          [...data].sort((a, b) =>
-            new Date(b.invoiceDate).getTime() - new Date(a.invoiceDate).getTime()
-          )
+        const sorted = [...data].sort((a, b) =>
+          new Date(b.invoiceDate).getTime() - new Date(a.invoiceDate).getTime()
         );
+
+        this.invoices.set(sorted);
+
+        // ✅ Reset page after reload
+        this.currentPage.set(1);
       },
       error: (err) => console.error(err)
     });
   }
+
   ngOnDestroy(): void {
-    this.sub.unsubscribe();
+    this.sub?.unsubscribe();
   }
+
+  // ✅ PAGINATION METHODS
+  nextPage() {
+    if (this.currentPage() < this.totalPages()) {
+      this.currentPage.update(v => v + 1);
+      this.expandedInvoice.set(null); // close expanded row
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage() > 1) {
+      this.currentPage.update(v => v - 1);
+      this.expandedInvoice.set(null);
+    }
+  }
+
+  goToPage(page: number) {
+    this.currentPage.set(page);
+    this.expandedInvoice.set(null);
+  }
+
   toggle(invoice: any) {
     this.expandedInvoice.update(current =>
       current === invoice ? null : invoice
@@ -64,11 +102,9 @@ export class InvoiceList implements OnInit, OnDestroy {
   }
 
   closeModal(event: boolean) {
-
     this.showModal = false;
     if (event) {
       this.loadInvoices();
     }
   }
 }
-

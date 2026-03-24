@@ -4,21 +4,55 @@
   margin: auto;
   font-family: Arial, sans-serif;
 }
-
-/* HEADER */
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
+  align-items: center;
+  flex-wrap: wrap; /* ✅ responsive */
+  gap: 10px;
 }
 
-.title {
-  font-size: 32px;
-  font-weight: bold;
-  margin: 0;
+.title-section {
+  display: flex;
+  flex-direction: column;
 }
+
+/* ✅ RIGHT SECTION FIX */
+.right-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;           /* spacing between items */
+  flex-wrap: wrap;     /* mobile friendly */
+}
+
+/* amount styling */
+.amount {
+  font-size: 20px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+/* buttons */
+.add-btn,
+.add-btn-expense {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* different colors */
+.add-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.add-btn-expense {
+  background-color: #ff9800;
+  color: white;
+}
+
 
 .dates {
   font-size: 16px;
@@ -47,6 +81,16 @@
   border: none;
   border-radius: 6px;
   cursor: pointer;
+}
+
+.add-btn-expense{
+  background-color: #666;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+
 }
 
 .add-btn:hover {
@@ -101,17 +145,19 @@ tr:hover {
 /* MOBILE RESPONSIVE */
 @media (max-width: 600px) {
 
-  .header {
+ .header {
     flex-direction: column;
-    gap: 12px;
-  }
-
-  .right-section {
     align-items: flex-start;
   }
 
-  .title {
-    font-size: 24px;
+  .right-section {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .add-btn,
+  .add-btn-expense {
+    flex: 1;
   }
 
   .amount {
@@ -170,6 +216,10 @@ tr:hover {
   max-width:95%;
   margin:auto;
   box-shadow:0 10px 40px rgba(0,0,0,0.6);
+}
+
+@media (max-width: 600px) {
+  
 }
 
 

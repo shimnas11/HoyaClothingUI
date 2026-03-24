@@ -5,9 +5,12 @@ import { routes } from './app.routes';
 import { provideToastr } from 'ngx-toastr';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './auth/interceptor/auth-interceptor';
+import { loaderInterceptor } from './shared/loader.interceptor';
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(withInterceptors([authInterceptor])),
+    provideHttpClient(
+      withInterceptors([authInterceptor]),
+   withInterceptors([loaderInterceptor])),
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideToastr({

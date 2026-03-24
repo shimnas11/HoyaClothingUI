@@ -75,7 +75,7 @@ export class CreateInvoice implements OnInit, OnChanges {
   }
 
   loadProducts() {
-    const items = this.productService.getProducts();
+    const items = this.productService.products();
     this.filteredProducts = items.filter(x => x.totalQuantity > 0);
   }
 

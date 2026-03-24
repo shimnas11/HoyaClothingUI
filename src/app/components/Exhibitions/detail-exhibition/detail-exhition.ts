@@ -1,19 +1,23 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CreateInvoice } from '../../Invoices/create-invoice/create-invoice';
 import { ExhibitionService } from '../../../services/exhibition-service';
+import { CreateExpense } from '../create-expense/create-expense';
+import { sign } from 'crypto';
 
 @Component({
   selector: 'app-detail-exhition',
-  imports: [CreateInvoice, CommonModule],
+  imports: [CreateInvoice, CommonModule, CreateExpense],
   templateUrl: './detail-exhition.html',
   styleUrl: './detail-exhition.css',
 })
 export class DetailExhition {
+  showExpenseModal = false;
   totalSale = 0;
   id!: string;
-  name = '';
+  name = signal('');
+  place = signal('');
   startDate!: Date;
   endDate!: Date;
   exhibition: any = {};
@@ -24,7 +28,7 @@ export class DetailExhition {
   ];
 
   expenses: any[] = [
-    { date: '02-01-2026', name: 'Rent', amount: 2000 }
+
   ];
 
 
@@ -41,7 +45,9 @@ export class DetailExhition {
     if (this.id) {
       this.exhibitionService.getDetails(this.id).subscribe(details => {
         // this.exhibition = details;
-        this.name = details.name;
+        this.name.set(details.name);
+        this.place.set(details.place);
+        // this.name =  ) details.name;
         this.startDate = details.startDate;
         this.endDate = details.endDate;
         this.exhibitionsInvoices = [...details.invoices];
@@ -49,8 +55,12 @@ export class DetailExhition {
           element.netAmount = element.totalAmount - element.discountAmount;
           this.totalSale += element.netAmount;
         });
+        if (details.expenses) {
+          this.expenses = [...details.expenses].sort((a, b) =>
+            new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime()
+          );
+        }
         // You can assign the details to a local variable to display in the template
-        console.log('Exhibition details:', details);
       });
     }
   }
@@ -61,7 +71,6 @@ export class DetailExhition {
 
   closeModal(event: any) {
     this.showModal = false;
-    console.log('New invoice data:', event);
     if (event) {
       this.getDetails();
     }
@@ -69,6 +78,19 @@ export class DetailExhition {
 
   setActiveTab(tab: 'invoices' | 'expenses') {
     this.activeTab = tab;
+  }
+
+
+  openExpenseModal() {
+    this.showExpenseModal = true;
+  }
+
+  handleClose(refresh: boolean) {
+    this.showExpenseModal = false;
+
+    if (refresh) {
+      this.getDetails();
+    }
   }
 }
 

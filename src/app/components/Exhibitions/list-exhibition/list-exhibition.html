@@ -21,7 +21,7 @@
 
             <tbody>
 
-                <tr *ngFor="let exhibition of exhibitions; trackBy: trackByCode" class="row-entry"
+                <tr *ngFor="let exhibition of paginatedExhibitions; trackBy: trackByCode" class="row-entry"
                     (click)="detailExhibition(exhibition)">
 
                     <td class="name">{{exhibition.name}}</td>
@@ -47,7 +47,7 @@
 
                     </td>
                     <td>
-                        <button class="edit-btn" (click)="detailExhibition(exhibition)"  >
+                        <button class="edit-btn" (click)="detailExhibition(exhibition)">
                             Details
                         </button>
 
@@ -60,6 +60,25 @@
 
         </table>
 
-    </div>
 
+
+        <div class="pagination" *ngIf="totalPages > 1">
+
+            <button (click)="prevPage()" [disabled]="currentPage === 1">
+                Prev
+            </button>
+
+            <button *ngFor="let page of [].constructor(totalPages); let i = index" (click)="goToPage(i + 1)"
+                [class.active]="currentPage === i + 1">
+
+                {{i + 1}}
+
+            </button>
+
+            <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+                Next
+            </button>
+
+        </div>
+    </div>
 </div>
