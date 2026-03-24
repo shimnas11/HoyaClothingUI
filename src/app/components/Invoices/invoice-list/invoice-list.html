@@ -1,0 +1,119 @@
+<div class="container-fluid">
+    <div class="header">
+        <h2 class="invoice-title">Invoice</h2>
+
+        <button class="add-btn" (click)="openModal()">
+            + New Invoice
+        </button>
+    </div>
+
+    <div class="table-wrapper">
+        <table class="ivoice-table ">
+            <!-- Parent Row -->
+            <thead>
+                <tr>
+                    <th class="invoice-table-th"></th>
+                    <th class="invoice-table-th">#</th>
+                    <th class="invoice-table-th"> Date</th>
+                    <th class="invoice-table-th">Payment </th>
+                    <th class="invoice-table-th ra">Total</th>
+                    <th class="invoice-table-th ra">Discount</th>
+                    <th class="invoice-table-th ra">Net</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let invoice of invoices(); trackBy: trackByInvoice">
+                    <tr>
+
+                        <td>
+                            <button class="expand-btn" (click)="toggle(invoice)">
+                                {{ expandedInvoice() === invoice ? '-' : '+' }}
+                            </button>
+                        </td>
+
+                        <td class="invoice-table-th">{{invoice.invoiceNumber}}</td>
+
+                        <td class="invoice-table-th">{{invoice.invoiceDate | date}}</td>
+
+                        <td class="invoice-table-th"><span [ngClass]="{
+                                'cash-bg': invoice.paymentMode === 'cash',
+                                'online-bg': invoice.paymentMode === 'online'
+                                }"> {{invoice.paymentMode}}</span>
+
+                        </td>
+                        <td class=" price">₹{{invoice.totalAmount}}</td>
+                        <td class="price">₹{{invoice.discountAmount}}</td>
+                        <td class="price">₹{{invoice.totalAmount-invoice.discountAmount}}</td>
+
+
+                    </tr>
+
+                    <!-- Expanded Row -->
+                    <tr *ngIf="expandedInvoice() === invoice" class="expand-row">
+
+                        <td colspan="4">
+
+                            <table class="inner-table">
+
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Color</th>
+                                        <th>Size</th>
+                                        <th>Qty</th>
+                                        <th>Price</th>
+                                        <th>Total</th>
+
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    <tr *ngFor="let item of invoice.items">
+
+                                        <td class="name">{{item.productName}}</td>
+
+                                        <td>
+                                            <span class="color-badge">
+                                                {{item.color}}
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span class="size-badge">
+                                                {{item.size}}
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span class="qty-badge">
+                                                {{item.quantity}}
+                                            </span>
+                                        </td>
+
+                                        <td class="price">₹{{item.price}}</td>
+
+                                        <td class="price">₹{{item.price}}</td>
+
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+                        </td>
+
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="modal-backdrop" *ngIf="showModal">
+        <div class="modal">
+            <app-create-invoice (modalClose)="closeModal($event)"></app-create-invoice>
+        </div>
+    </div>
+
+</div>

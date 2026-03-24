@@ -1,0 +1,90 @@
+/* Full screen center */
+.login-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #27592D, #16a34a);
+  padding: 16px;
+}
+
+/* Card */
+.login-card {
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Title */
+.login-card h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Inputs */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+/* Button */
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background: #22c55e;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-btn:hover {
+  background: #22c55e;
+}
+
+/* Signup text */
+.signup-text {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+.signup-text a {
+  color: #4facfe;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* 📱 Mobile tweaks */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 16px;
+    border-radius: 10px;
+  }
+
+  .login-card h2 {
+    font-size: 20px;
+  }
+
+  .login-btn {
+    font-size: 14px;
+  }
+}

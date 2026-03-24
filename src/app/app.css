@@ -1,0 +1,23 @@
+.layout-container {
+  height: 100vh;
+}
+
+.sidebar {
+  width: 240px;
+  background: #020617;
+  color: white;
+}
+
+.page-content {
+  padding: 20px;
+  
+}
+
+.topbar {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 20px;
+  border-bottom: 1px solid #e2e8f0;
+}

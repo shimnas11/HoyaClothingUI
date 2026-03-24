@@ -1,0 +1,21 @@
+.menu {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+  }
+  
+  .menu a {
+    color: white;
+    padding: 12px;
+    text-decoration: none;
+    border-radius: 6px;
+    margin-bottom: 6px;
+  }
+  
+  .menu a:hover {
+    background: #1e293b;
+  }
+  
+  .menu a.active {
+    background: #2563eb;
+  }

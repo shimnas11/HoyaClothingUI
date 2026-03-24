@@ -1,0 +1,120 @@
+/* PAGE */
+.exhibition-page {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  /* background: #fff; */
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+   background:white;
+}
+.form-group {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.error {
+  color: #e53935;
+  font-size: 12px;
+  margin-top: 4px;
+}
+::ng-deep .form-group label {
+  
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: white;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+/* Input styling */
+.form-group input {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Focus effect */
+.form-group input:focus {
+  border-color: #4CAF50;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+/* Placeholder styling */
+.form-group input::placeholder {
+  color: #aaa;
+  font-size: 13px;
+}
+
+/* Disabled state */
+.form-group input:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+/* Error state */
+.form-group input.ng-invalid.ng-touched {
+  border-color: #e53935;
+  background-color: #fff5f5;
+}
+
+/* Success state (optional) */
+.form-group input.ng-valid.ng-touched {
+  border-color: #4CAF50;
+}
+
+/* CLOSE */
+.close-btn{
+  position: absolute;
+  top: 12px;
+  right: 12px;
+
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  color: white;
+
+  cursor: pointer;
+  line-height: 1;
+  transition: 0.2s;
+}
+
+.save-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.save-btn:hover {
+  background-color: #43a047;
+}
+
+.save-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+  .card-body {
+    flex-direction: column;
+    gap: 5px;
+  }
+}

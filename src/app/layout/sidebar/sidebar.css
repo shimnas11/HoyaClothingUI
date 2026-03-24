@@ -1,0 +1,23 @@
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: black;
+  min-height: 100vh;
+}
+
+.sidebar-menu a {
+  color: white;
+  text-decoration: none;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 5px;
+}
+
+.sidebar-menu a:hover {
+  background: #1e293b;
+}
+
+.sidebar-menu a.active {
+  background: #2563eb;
+}

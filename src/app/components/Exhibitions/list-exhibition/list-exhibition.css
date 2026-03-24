@@ -1,0 +1,98 @@
+.page{
+  width:100%;
+  color:white;
+   padding: 10px; 
+}
+
+/* Header */
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  color:#020617;
+}
+
+/* Table wrapper */
+
+.table-wrapper{
+  background:#020617;
+  border-radius:12px;
+  overflow-x:auto;
+  border:1px solid #1e293b;
+}
+
+/* Table */
+
+.exhibition-table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+/* Table header */
+
+.exhibition-table th{
+  text-align:left;
+  padding:10px;
+  font-size:13px;
+  color:#94a3b8;
+  border-bottom:1px solid #1e293b;
+}
+
+/* Table rows */
+
+.exhibition-table td{
+  padding:10px;
+  border-bottom:1px solid #1e293b;
+  font-size:14px;
+}
+
+.exhibition-table tbody tr:hover{
+  background:#0f172a;
+}
+
+.name{
+  font-weight:600;
+}
+
+.price{
+  color:#22c55e;
+  font-weight:500;
+}
+
+.row-entry{
+  cursor:pointer;
+}
+  
+.edit-btn{
+
+  background:#22c55e;
+  border:none;
+  padding:10px 16px;
+  color:white;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:500;
+}
+
+/* Responsive */
+
+@media (max-width:768px){
+
+.exhibition-table th,
+.exhibition-table td{
+  padding:10px;
+  font-size:12px;
+}
+
+
+.exhibition-table td:last-child{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+}
+
+}
+

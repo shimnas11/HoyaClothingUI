@@ -1,0 +1,156 @@
+.form-page{
+  padding:30px;
+  color:white;
+  position:relative;
+
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+
+  width:100%;
+  max-width:500px;
+}
+
+.form-page{
+  padding:30px;
+  color:white;
+  position:relative;
+
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+
+  width:100%;
+  max-width:500px;
+}
+
+input{
+  padding:10px;
+  background:#020617;
+  border:1px solid #334155;
+  color:white;
+  border-radius:6px;
+  width:100%;
+}
+
+input:focus{
+  outline:none;
+  border-color:#2563eb;
+}
+
+.save-btn{
+background:#22c55e;
+border:none;
+padding:12px;
+border-radius:6px;
+color:white;
+cursor:pointer;
+margin-top:10px;
+}
+
+.size-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:10px;
+}
+
+.size-row input{
+  flex: 1;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #334155;
+  background: #0f172a;
+  color: white;
+}
+
+.size-row input[type="number"]{
+  max-width: 120px;
+}
+
+.remove-btn{
+  background: #ef4444;
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.add-size-btn{
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  width: fit-content;
+  transition: all 0.2s ease;
+}
+
+.add-size-btn:hover{
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.add-size-btn:active{
+  transform: scale(0.97);
+}
+.form-page{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* close button */
+
+.close-btn{
+  position: absolute;
+  top: 12px;
+  right: 12px;
+
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  color: white;
+
+  cursor: pointer;
+  line-height: 1;
+  transition: 0.2s;
+}
+
+.close-btn:hover{
+  color: #ef4444;
+  transform: scale(1.2);
+}
+
+@media (max-width:600px){
+
+  .form-page{
+    padding:20px;
+  }
+  
+  .size-row{
+    flex-direction:column;
+    align-items:stretch;
+  }
+  
+  .size-row input[type="number"]{
+    max-width:100%;
+  }
+  
+  .remove-btn{
+    width:100%;
+  }
+  
+  .add-size-btn{
+    width:100%;
+  }
+  
+  .save-btn{
+    width:100%;
+  }
+  
+  }

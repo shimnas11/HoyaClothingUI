@@ -1,0 +1,65 @@
+<div class="page">
+
+
+    <div class="table-wrapper">
+
+        <table class="exhibition-table">
+
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Place</th>
+                    <th>Start Date</th>
+
+                    <th>Days</th>
+                    <th>Cost</th>
+                    <th>Expense</th>
+                    <th>Net</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr *ngFor="let exhibition of exhibitions; trackBy: trackByCode" class="row-entry"
+                    (click)="detailExhibition(exhibition)">
+
+                    <td class="name">{{exhibition.name}}</td>
+
+                    <td>{{exhibition.place}}</td>
+
+                    <td>{{exhibition.startDate | date}}</td>
+                    <td>{{exhibition.numberOfDays}}</td>
+
+                    <td class="price">
+                        ₹{{exhibition.bookingCost}}
+                    </td>
+
+                    <td class="price">
+
+                        ₹{{exhibition.totalExpense}}
+
+                    </td>
+
+                    <td>
+
+                        ₹{{exhibition.netAmount}}
+
+                    </td>
+                    <td>
+                        <button class="edit-btn" (click)="detailExhibition(exhibition)"  >
+                            Details
+                        </button>
+
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

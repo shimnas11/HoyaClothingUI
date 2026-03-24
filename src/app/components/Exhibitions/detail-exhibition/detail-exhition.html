@@ -1,0 +1,91 @@
+<div class="exhibition-container">
+
+    <!-- HEADER -->
+    <div class="header">
+
+        <div class="title-section">
+            <h1 class="title">{{name}}</h1>
+            <h5>{{name}}</h5>
+            <p class="dates">{{startDate | date}} - {{endDate | date}}</p>
+        </div>
+
+        <div class="right-section">
+            <div class="amount">₹ {{totalSale}}</div>
+            <button class="add-btn" (click)="addInvoice()">+ Add Invoice</button>
+        </div>
+
+        <!-- <div class="right-section">
+            <div class="amount">₹ 1,25,000</div>
+            <button class="add-btn" (click)="addInvoice()">+ Add Expense</button>
+        </div> -->
+
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+        <button [class.active]="activeTab === 'invoices'" (click)="activeTab = 'invoices'">
+            Invoices
+        </button>
+
+        <button [class.active]="activeTab === 'expenses'" (click)="activeTab = 'expenses'">
+            Expenses
+        </button>
+    </div>
+
+    <!-- TAB CONTENT -->
+
+    <!-- INVOICES TABLE -->
+    @if (activeTab === 'invoices') {
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Discount</th>
+                    <th>Net</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let invoice of exhibitionsInvoices">
+                    <td>{{ invoice.invoiceNumber }}</td>
+                    <td>{{ invoice.invoiceDate }}</td>
+                    <td>₹ {{ invoice.totalAmount }}</td>
+                    <td>₹ {{ invoice.discountAmount }}</td>
+                    <td>₹ {{ invoice.netAmount }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    }
+
+    <!-- EXPENSE TABLE -->
+    @if (activeTab === 'expenses') {
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Expense</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let expense of expenses">
+                    <td>{{ expense.date }}</td>
+                    <td>{{ expense.name }}</td>
+                    <td>₹ {{ expense.amount }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    }
+
+</div>
+
+<div class="modal-backdrop" *ngIf="showModal">
+    <div class="modal">
+        <app-create-invoice [exhibitionId]="id" (modalClose)="closeModal($event)"></app-create-invoice>
+    </div>
+</div>

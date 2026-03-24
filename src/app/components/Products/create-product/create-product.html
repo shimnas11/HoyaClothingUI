@@ -1,0 +1,48 @@
+<div class="form-page">
+
+    <button type="button" class="close-btn" (click)="closeModal()">
+        ×
+    </button>
+    <form [formGroup]="productForm" (ngSubmit)="submit()">
+
+        <input placeholder="Name" formControlName="name">
+        <input placeholder="Code" formControlName="code">
+        <input placeholder="Color" formControlName="color">
+
+        <input type="number" placeholder="Cost" formControlName="cost">
+        <input type="number" placeholder="Selling Price" formControlName="sellingPrice">
+
+
+        <h3>Sizes</h3>
+
+        <div formArrayName="sizes">
+
+            <div *ngFor="let s of sizes.controls; let i=index" [formGroupName]="i">
+
+                <div class="size-row">
+                    <input placeholder="Size" formControlName="size">
+
+                    <input type="number" placeholder="Qty" formControlName="quantity">
+
+                    <button type="button" class="remove-btn" (click)="removeSize(i)">
+                        ×
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+
+        <button type="button" class="add-size-btn" (click)="addSize()">
+            + Add Size
+        </button>
+
+        <br><br>
+
+        <button type="submit" class="save-btn">
+            Save Product
+        </button>
+
+    </form>
+
+</div>

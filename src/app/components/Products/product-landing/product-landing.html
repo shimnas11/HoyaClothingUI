@@ -1,0 +1,19 @@
+<div class="page">
+
+    <div class="header">
+        <h2 class="product-title">Products</h2>
+
+        <button class="add-btn" (click)="openModal()">
+            + Add Product
+        </button>
+    </div>
+
+    <app-product-list></app-product-list>
+
+    <div class="modal-backdrop" *ngIf="showModal">
+        <div class="modal">
+            <app-create-product (productAdded)="closeModal($event)"></app-create-product>
+        </div>
+    </div>
+
+</div>

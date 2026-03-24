@@ -1,0 +1,21 @@
+<div class="container-fluid">
+    <div class="header">
+        <h2 class="page-title">Exhibitions</h2>
+
+        <button class="add-btn" (click)="openModal()">
+            + New Exhibition
+        </button>
+    </div>
+
+    <div>
+        <app-list-exhibition #listComp></app-list-exhibition>
+    </div>
+
+
+    <div class="modal-backdrop" *ngIf="showModal">
+        <div class="modal">
+            <app-create-exhibition (modalClose)="closeModal($event)"></app-create-exhibition>
+        </div>
+    </div>
+
+</div>

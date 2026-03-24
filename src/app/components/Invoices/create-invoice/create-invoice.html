@@ -1,0 +1,114 @@
+<div class="invoice-page">
+
+  <h2>Create Invoice</h2>
+
+  <button type="button" class="close-btn" (click)="closeModal()">×</button>
+
+  <form [formGroup]="invoiceForm" (ngSubmit)="submit()">
+
+    <!-- SEARCH -->
+    <mat-form-field appearance="outline" class="full">
+      <input type="text"
+             matInput
+             placeholder="Search product"
+             [formControl]="productSearch"
+             [matAutocomplete]="auto" />
+
+      <mat-autocomplete #auto="matAutocomplete"
+                        (optionSelected)="onProductSelected($event.option.value)">
+        <mat-option *ngFor="let p of filteredProducts" [value]="p">
+          {{ p.code }} - {{ p.name }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <!-- SELECTION -->
+    <div class="selection-box" *ngIf="selectedProduct" [formGroup]="selectionForm">
+
+      <div class="product-name">
+        {{selectedProduct.code}} - {{selectedProduct.name}}
+      </div>
+
+      <div class="selection-row">
+        <select class="size-select" formControlName="size">
+          <option value="" disabled>Select size</option>
+          <option *ngFor="let s of getAvailableSizes(selectedProduct)" [value]="s.size">
+            {{ s.size }}
+          </option>
+        </select>
+
+        <input class="qty-input"
+               type="number"
+               formControlName="quantity"
+               min="1"
+               [max]="getMaxQuantity()" />
+
+        <button type="button" class="tick-btn" (click)="addSelectedProduct()">
+          ✓
+        </button>
+      </div>
+
+    </div>
+
+    <!-- PRODUCT CARDS -->
+    <div formArrayName="products" class="product-list">
+
+      <div class="product-card"
+           *ngFor="let p of products.controls; let i=index"
+           [formGroupName]="i">
+
+        <div class="card-header">
+          <div class="name">{{p.value.name}}</div>
+          <button class="delete-btn" (click)="removeProduct(i, $event)">✕</button>
+        </div>
+
+        <div class="card-body">
+          <div>Color: <span>{{p.value.color}}</span></div>
+          <div>Size: <span>{{p.value.size}}</span></div>
+          <div>Qty: <span>{{p.value.quantity}}</span></div>
+        </div>
+
+        <div class="card-footer">
+          <div>₹{{p.value.price}} × {{p.value.quantity}}</div>
+          <div class="total">₹{{rowTotal(i)}}</div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- PAYMENT -->
+    <div class="payment-section">
+      <label>Payment Mode</label>
+
+      <div class="radio-group">
+        <label class="radio-option">
+          <input type="radio" formControlName="paymentMode" value="cash">
+          <span>Cash</span>
+        </label>
+
+        <label class="radio-option">
+          <input type="radio" formControlName="paymentMode" value="online">
+          <span>Online</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- DISCOUNT -->
+    <div class="summary">
+      <label>Discount</label>
+      <input type="number" formControlName="discount" class="discount-input">
+    </div>
+
+    <!-- TOTALS -->
+    <div class="totals">
+      <div>Total: ₹{{totalAmount()}}</div>
+      <div class="net">Net: ₹{{netAmount()}}</div>
+    </div>
+
+    <button class="save-btn" type="submit" [disabled]="invoiceForm.invalid">
+      Create Invoice
+    </button>
+
+  </form>
+</div>

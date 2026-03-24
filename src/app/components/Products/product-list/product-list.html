@@ -1,0 +1,66 @@
+<div class="page">
+
+
+    <div class="table-wrapper">
+
+        <table class="inventory-table">
+
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Code</th>
+                    <th>Color</th>
+
+                    <th>Selling Price</th>
+                    <th>Total Qty</th>
+                    <th>Available Sizes</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr *ngFor="let product of products; trackBy: trackByCode">
+
+                    <td class="name">{{product.name}}</td>
+
+                    <td>{{product.code}}</td>
+
+                    <td>
+                        <span class="color-badge">
+                            {{product.color}}
+                        </span>
+                    </td>
+
+
+
+                    <td class="price">
+                        ₹{{product.sellingPrice}}
+                    </td>
+
+                    <td>
+                        <span class="qty-badge">
+                            {{product.totalQuantity}}
+                        </span>
+                    </td>
+
+                    <td>
+
+                        <ng-container *ngFor="let s of product.sizes">
+
+                            <span *ngIf="s.quantity > 0" class="size-badge">
+                                {{s.size}}
+                            </span>
+
+                        </ng-container>
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
