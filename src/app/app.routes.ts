@@ -20,23 +20,24 @@ export const routes = [
         children: [
             {
                 path: 'products',
-                component: ProductLanding
+                component: ProductLanding, renderMode: 'client'
             },
             {
                 path: 'invoices',
-                component: InvoiceList
+                component: InvoiceList, renderMode: 'client'
             },
             {
                 path: 'dashboard',
-                component: DashboardComponent
+                component: DashboardComponent, renderMode: 'client'
             },
             {
                 path: 'exhibitions',
-                component: ExhibitionLanding
+                component: ExhibitionLanding, renderMode: 'client'
             },
             {
                 path: 'details/:id',
-                component: DetailExhition
+                component: DetailExhition,
+                renderMode: 'client'
             },
         ]
     },
@@ -47,9 +48,9 @@ export const routes = [
         component: AuthLayoutComponent,
 
         children: [
-            { path: 'login', component: LoginComponent },
+            { path: 'login', component: LoginComponent, renderMode: 'client' },
         ]
     },
 
-    { path: '**', redirectTo: 'login' }
+    { path: '**', redirectTo: 'login', renderMode: 'client' }
 ];
