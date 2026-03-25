@@ -10,7 +10,7 @@
         </div>
 
         <div class="right-section">
-            <div class="amount">₹ {{totalSale}}</div>
+            <div class="amount">₹ {{totalSale()}}</div>
             <button class="add-btn" (click)="addInvoice()">+ Add Invoice</button>
             <!-- </div>
 
@@ -45,18 +45,43 @@
                     <th>Amount</th>
                     <th>Discount</th>
                     <th>Net</th>
+                    <th>Payment</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let invoice of exhibitionsInvoices">
+                <tr *ngFor="let invoice of paginatedExhibitions; trackBy: trackByInvoice">
                     <td>{{ invoice.invoiceNumber }}</td>
-                    <td>{{ invoice.invoiceDate }}</td>
+                    <td>{{ invoice.invoiceDate | date:'medium' }}</td>
                     <td>₹ {{ invoice.totalAmount }}</td>
                     <td>₹ {{ invoice.discountAmount }}</td>
                     <td>₹ {{ invoice.netAmount }}</td>
+                   <td ><span [ngClass]="{
+                                'cash-bg': invoice.paymentMode === 'cash',
+                                'online-bg': invoice.paymentMode === 'online'
+                                }"> {{invoice.paymentMode}}</span>
                 </tr>
             </tbody>
         </table>
+
+
+    </div>
+    <div class="pagination" *ngIf="totalPages > 1">
+
+        <button (click)="prevPage()" [disabled]="currentPage === 1">
+            Prev
+        </button>
+
+        <button *ngFor="let page of [].constructor(totalPages); let i = index" (click)="goToPage(i + 1)"
+            [class.active]="currentPage === i + 1">
+
+            {{i + 1}}
+
+        </button>
+
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+            Next
+        </button>
+
     </div>
     }
 
@@ -72,13 +97,32 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let expense of expenses">
-                    <td>{{ expense.createdDate }}</td>
+                <tr *ngFor="let expense of paginatedExpenses">
+                    <td>{{ expense.createdDate | date :'medium' }}</td>
                     <td>{{ expense.name }}</td>
                     <td>₹ {{ expense.cost }}</td>
                 </tr>
             </tbody>
         </table>
+    </div>
+
+    <div class="pagination-expenses" *ngIf="totalExpensePages > 1">
+
+        <button (click)="prevExpensePage()" [disabled]="currentExpensePage === 1">
+            Prev
+        </button>
+
+        <button *ngFor="let page of [].constructor(totalExpensePages); let i = index" (click)="goToExpensePage(i + 1)"
+            [class.active]="currentExpensePage === i + 1">
+
+            {{i + 1}}
+
+        </button>
+
+        <button (click)="nextExpensePage()" [disabled]="currentExpensePage === totalExpensePages">
+            Next
+        </button>
+
     </div>
     }
 

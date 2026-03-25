@@ -26,4 +26,10 @@ export class ExhibitionService {
       responseType: 'text' as 'json'
     });
   }
+
+  addExpenses(expense: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/exhibitions/expenses`, expense, {
+      responseType: 'text' as 'json'
+    });
+  }
 }

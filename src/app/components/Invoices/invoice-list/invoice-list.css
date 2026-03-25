@@ -183,14 +183,14 @@
   /* Badges */
   
   .qty-badge{
-    background:white;
+    color:white;
     padding:4px 10px;
     border-radius:20px;
     font-size:12px;
   }
   
   .size-badge{
-    background:white;
+    color:white;
     padding:4px 8px;
     margin-right:5px;
     border-radius:6px;
@@ -198,10 +198,10 @@
   }
   
   .color-badge{
-    background:white;
     padding:4px 10px;
     border-radius:6px;
     font-size:12px;
+    color: white;
   }
   .name{
     color: white;

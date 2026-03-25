@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { ExhibitionService } from '../../../services/exhibition-service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-expense',
@@ -17,7 +19,9 @@ export class CreateExpense {
   expenseForm!: FormGroup;
   submitted = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+    private toastr: ToastrService,
+    private exhibitionService: ExhibitionService) {
     this.expenseForm = this.fb.group({
       name: ['', [Validators.required]],
       cost: [0, [Validators.required, Validators.min(1)]]
@@ -35,8 +39,17 @@ export class CreateExpense {
       cost: this.expenseForm.value.cost
     };
 
+    this.exhibitionService.addExpenses(payload).subscribe({
+      next: () => {
+        this.toastr.success('Expense added successfully');
 
-    this.closeExpenseModal.emit(true);
+        this.closeExpenseModal.emit(true);
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+
   }
 
   close() {
