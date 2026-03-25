@@ -7,20 +7,24 @@
   <form [formGroup]="invoiceForm" (ngSubmit)="submit()">
 
     <!-- SEARCH -->
-    <mat-form-field appearance="outline" class="full">
-      <input type="text"
-             matInput
-             placeholder="Search product"
-             [formControl]="productSearch"
-             [matAutocomplete]="auto" />
+    <input type="text"
+           placeholder="Search product"
+           [formControl]="productSearch"
+           class="search-input" />
 
-      <mat-autocomplete #auto="matAutocomplete"
-                        (optionSelected)="onProductSelected($event.option.value)">
-        <mat-option *ngFor="let p of filteredProducts" [value]="p">
-          {{ p.code }} - {{ p.name }}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
+    <!-- RESULTS LIST -->
+    <div class="search-results" *ngIf="filteredProducts.length > 0">
+
+      <div class="result-item"
+           *ngFor="let p of filteredProducts"
+           (click)="onProductSelected(p)">
+
+        {{p.code}} - {{p.name}}
+        <span class="stock">({{p.totalQuantity}})</span>
+
+      </div>
+
+    </div>
 
     <!-- SELECTION -->
     <div class="selection-box" *ngIf="selectedProduct" [formGroup]="selectionForm">
@@ -43,9 +47,7 @@
                min="1"
                [max]="getMaxQuantity()" />
 
-        <button type="button" class="tick-btn" (click)="addSelectedProduct()">
-          ✓
-        </button>
+        <button type="button" class="tick-btn" (click)="addSelectedProduct()">✓</button>
       </div>
 
     </div>
@@ -63,9 +65,9 @@
         </div>
 
         <div class="card-body">
-          <div>Color: <span>{{p.value.color}}</span></div>
-          <div>Size: <span>{{p.value.size}}</span></div>
-          <div>Qty: <span>{{p.value.quantity}}</span></div>
+          <div>Color: {{p.value.color}}</div>
+          <div>Size: {{p.value.size}}</div>
+          <div>Qty: {{p.value.quantity}}</div>
         </div>
 
         <div class="card-footer">
@@ -82,14 +84,12 @@
       <label>Payment Mode</label>
 
       <div class="radio-group">
-        <label class="radio-option">
-          <input type="radio" formControlName="paymentMode" value="cash">
-          <span>Cash</span>
+        <label>
+          <input type="radio" formControlName="paymentMode" value="cash"> Cash
         </label>
 
-        <label class="radio-option">
-          <input type="radio" formControlName="paymentMode" value="online">
-          <span>Online</span>
+        <label>
+          <input type="radio" formControlName="paymentMode" value="online"> Online
         </label>
       </div>
     </div>

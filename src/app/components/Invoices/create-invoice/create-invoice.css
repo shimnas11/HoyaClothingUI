@@ -9,8 +9,41 @@
   flex-direction: column;
   gap: 10px;
 }
+.custom-input .mat-mdc-input-element {
+  color: white;
+}
 
+.custom-input .mdc-text-field__input {
+  height: auto;
+}
 
+.search-results {
+  border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+  background: white;
+  color: black;
+}
+
+.result-item {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.result-item:hover {
+  background: #f5f5f5;
+  color: black;
+}
+
+.search-input{
+  width:100%;
+  padding:10px;
+  background:#020617;
+  border:1px solid #334155;
+  color:white;
+  border-radius:6px;
+  font-size:16px;
+}
 /* CLOSE */
 .close-btn{
   position: absolute;

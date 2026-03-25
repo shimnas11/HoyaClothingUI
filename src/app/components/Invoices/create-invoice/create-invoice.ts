@@ -1,55 +1,42 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../../services/product-service';
 import { InvoiceService } from '../../../services/invoice-service';
 import { ToastrService } from 'ngx-toastr';
 import { MatRadioModule } from '@angular/material/radio';
+import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
+
 @Component({
   selector: 'app-create-invoice',
   standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MatAutocompleteModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatButtonModule,
     MatRadioModule
   ],
   templateUrl: './create-invoice.html',
   styleUrl: './create-invoice.css'
 })
-export class CreateInvoice implements OnInit, OnChanges {
+export class CreateInvoice implements OnInit {
 
   filteredProducts: any[] = [];
   selectedProduct: any;
+  allProducts: any[] = [];
 
   invoiceForm!: FormGroup;
   selectionForm!: FormGroup;
   productSearch: any;
+
   @Input() exhibitionId!: string;
   @Output() modalClose = new EventEmitter<boolean>();
-  @Output() exhibitionInvoice = new EventEmitter<any>();
 
-  constructor(private fb: FormBuilder,
-
+  constructor(
+    private fb: FormBuilder,
     private toastr: ToastrService,
     private productService: ProductService,
     private invoiceService: InvoiceService
-  ) { }
-
-
-  ngOnChanges(changes: SimpleChanges): void {
-
-    if (changes['exhibitionId']) {
-      // console.log('Changed ID:', this.exhibitionId);
-    }
-  }
+  ) {}
 
   ngOnInit() {
 
@@ -67,20 +54,36 @@ export class CreateInvoice implements OnInit, OnChanges {
       products: this.fb.array([])
     });
 
-    this.loadProducts();
+    this.allProducts = this.productService.products();
+
+    // ✅ SEARCH
+    this.productSearch.valueChanges.pipe(
+      startWith(''),
+      debounceTime(300),
+      distinctUntilChanged()
+    ).subscribe((value: string) => {
+
+      if (!value) {
+        this.filteredProducts = [];
+        return;
+      }
+
+      const search = value.toLowerCase();
+
+      this.filteredProducts = this.allProducts
+        .filter(p =>
+          p.totalQuantity > 0 &&
+          (
+            p.name.toLowerCase().includes(search) ||
+            p.code.toLowerCase().includes(search)
+          )
+        )
+        .slice(0, 10);
+    });
   }
 
   get products(): FormArray {
     return this.invoiceForm.get('products') as FormArray;
-  }
-
-  loadProducts() {
-    const items = this.productService.products();
-    this.filteredProducts = items.filter(x => x.totalQuantity > 0);
-  }
-
-  getAvailableSizes(product: any) {
-    return product.sizes.filter((s: any) => s.quantity > 0);
   }
 
   onProductSelected(product: any) {
@@ -91,7 +94,13 @@ export class CreateInvoice implements OnInit, OnChanges {
       size: '',
       quantity: 1
     });
+
     this.productSearch.setValue('');
+    this.filteredProducts = [];
+  }
+
+  getAvailableSizes(product: any) {
+    return product.sizes.filter((s: any) => s.quantity > 0);
   }
 
   getMaxQuantity(): number {
@@ -115,24 +124,20 @@ export class CreateInvoice implements OnInit, OnChanges {
     const selectedSize = product.sizes.find((s: any) => s.size === size);
 
     if (!selectedSize || selectedSize.quantity < quantity) {
-      alert('Not enough stock');
+      this.toastr.warning('Not enough stock');
       return;
     }
 
-    // Reduce stock
     selectedSize.quantity -= quantity;
 
-    // Remove size if stock = 0
     if (selectedSize.quantity === 0) {
       product.sizes = product.sizes.filter((s: any) => s.quantity > 0);
     }
 
-    // Remove product if no sizes left
     if (product.sizes.length === 0) {
-      this.filteredProducts = this.filteredProducts.filter(p => p.id !== product.id);
+      this.allProducts = this.allProducts.filter(p => p.id !== product.id);
     }
 
-    // Check if already exists → merge
     const existing = this.products.controls.find(p =>
       p.value.productId === product.id && p.value.size === size
     );
@@ -154,18 +159,15 @@ export class CreateInvoice implements OnInit, OnChanges {
       this.products.push(group);
     }
 
-    // Reset selection
     this.selectionForm.reset({ quantity: 1 });
     this.selectedProduct = null;
-    this.productSearch.setValue('');
   }
 
   removeProduct(index: number, event: Event) {
-    // 🔥 P
+
     const product = this.products.at(index).value;
 
-    // Restore stock
-    const mainProduct = this.filteredProducts.find(p => p.id === product.productId);
+    const mainProduct = this.allProducts.find(p => p.id === product.productId);
 
     if (mainProduct) {
       let sizeObj = mainProduct.sizes.find((s: any) => s.size === product.size);
@@ -190,9 +192,8 @@ export class CreateInvoice implements OnInit, OnChanges {
   }
 
   totalAmount() {
-    return this.products.controls.reduce((sum, p) => {
-      return sum + (p.value.price * p.value.quantity);
-    }, 0);
+    return this.products.controls.reduce((sum, p) =>
+      sum + (p.value.price * p.value.quantity), 0);
   }
 
   netAmount() {
@@ -203,9 +204,14 @@ export class CreateInvoice implements OnInit, OnChanges {
 
     if (this.invoiceForm.invalid) return;
 
+    if (this.products.length === 0) {
+      this.toastr.warning('Add at least one product');
+      return;
+    }
+
     const payload = {
       netAmount: this.netAmount(),
-      exhibitionId: '',
+      exhibitionId: this.exhibitionId || '',
       discount: this.invoiceForm.value.discount,
       paymentMode: this.invoiceForm.value.paymentMode,
       products: this.products.controls.map(p => ({
@@ -216,22 +222,13 @@ export class CreateInvoice implements OnInit, OnChanges {
       }))
     };
 
-    if (payload.products.length === 0) {
-      this.toastr.warning('Add at least one product');
-      return;
-    }
-    if (this.exhibitionId) {
-      payload.exhibitionId = this.exhibitionId;
-
-    }
-    this.invoiceService.addInvoice(payload).subscribe(res => {
+    this.invoiceService.addInvoice(payload).subscribe(() => {
       this.toastr.success('Invoice successfully created');
       this.modalClose.emit(true);
     });
-
   }
 
   closeModal() {
-    this.modalClose.emit();
+    this.modalClose.emit(false);
   }
 }
