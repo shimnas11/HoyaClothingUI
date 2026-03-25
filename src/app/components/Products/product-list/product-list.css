@@ -131,3 +131,19 @@
   cursor: not-allowed;
 }
 
+.search-box {
+  margin-bottom: 15px;
+}
+
+.search-box input {
+  width: 300px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.no-data {
+  text-align: center;
+  margin-top: 20px;
+  color: gray;
+}

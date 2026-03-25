@@ -1,5 +1,10 @@
 <div class="page">
 
+    <!-- 🔍 SEARCH -->
+    <div class="search-box">
+        <input type="text" placeholder="Search by name, code, color..." (input)="onSearch($event.target.value)" />
+    </div>
+
     <div *ngIf="products().length === 0" class="loading">
         Loading products...
     </div>
@@ -22,9 +27,7 @@
             <tbody>
 
                 <tr *ngFor="let product of paginatedProducts(); trackBy: trackByCode">
-
                     <td class="name">{{product.name}}</td>
-
                     <td>{{product.code}}</td>
 
                     <td>
@@ -33,9 +36,7 @@
                         </span>
                     </td>
 
-                    <td class="price">
-                        ₹{{product.sellingPrice}}
-                    </td>
+                    <td class="price">₹{{product.sellingPrice}}</td>
 
                     <td>
                         <span class="qty-badge">
@@ -50,13 +51,17 @@
                             </span>
                         </ng-container>
                     </td>
-
                 </tr>
 
             </tbody>
 
         </table>
 
+    </div>
+
+    <!-- ❌ NO RESULT -->
+    <div *ngIf="filteredProducts().length === 0 && products().length > 0" class="no-data">
+        No products found
     </div>
 
     <!-- ✅ PAGINATION -->
