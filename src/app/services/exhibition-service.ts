@@ -21,6 +21,11 @@ export class ExhibitionService {
   }
 
 
+  getOverview(id: string): Observable<any> {
+    return this.http.get<any[]>(`${this.apiUrl}/exhibitions/Overview/${id}`)
+  }
+
+
   addExhibitions(exhibition: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/exhibitions`, exhibition, {
       responseType: 'text' as 'json'

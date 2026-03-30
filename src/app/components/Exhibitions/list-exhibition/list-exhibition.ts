@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ExhibitionOverviewModal } from '../../../models/overview-modal';
 
 @Component({
   selector: 'app-list-exhibition',
@@ -18,18 +19,18 @@ export class ListExhibition implements OnInit, OnDestroy {
 
   exhibitions: any[] = [];          // full data
   paginatedExhibitions: any[] = []; // paginated data
-
+  showModal = false;
   // ✅ pagination
   currentPage = 1;
   pageSize = 5;
   totalPages = 0;
-
+  data = new ExhibitionOverviewModal();
   constructor(
     private exhibitionService: ExhibitionService,
     @Inject(PLATFORM_ID) private platformId: object,
     private cd: ChangeDetectorRef,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
@@ -84,11 +85,29 @@ export class ListExhibition implements OnInit, OnDestroy {
     this.router.navigate(['/details', exhibition.id]);
   }
 
+  GetExhibitionOverview(exhibition: any) {
+    this.exhibitionService.getOverview(exhibition.id).subscribe(details => {
+      this.data = details;
+      this.showModal = true;
+      this.data.profit = this.data.profit > 0 ? this.data.profit : 0;
+      this.data.loss = this.data.profit < 0 ? this.data.profit : 0;
+      this.data.totalExpense = exhibition.totalExpense + exhibition.bookingCost;
+      this.cd.detectChanges();
+
+    });
+  }
+
   trackByCode(index: number, item: any) {
     return item.code;
   }
 
   ngOnDestroy(): void {
     this.sub?.unsubscribe();
+  }
+
+
+
+  close() {
+    this.showModal = false;
   }
 }

@@ -21,8 +21,7 @@
 
             <tbody>
 
-                <tr *ngFor="let exhibition of paginatedExhibitions; trackBy: trackByCode" class="row-entry"
-                    (click)="detailExhibition(exhibition)">
+                <tr *ngFor="let exhibition of paginatedExhibitions; trackBy: trackByCode" class="row-entry">
 
                     <td class="name">{{exhibition.name}}</td>
 
@@ -49,6 +48,10 @@
                     <td>
                         <button class="edit-btn" (click)="detailExhibition(exhibition)">
                             Details
+                        </button>
+
+                        <button class="overview-btn" (click)="GetExhibitionOverview(exhibition)">
+                            Overview
                         </button>
 
 
@@ -80,5 +83,56 @@
             </button>
 
         </div>
+    </div>
+</div>
+
+
+<div class="modal-backdrop" *ngIf="showModal">
+    <div class="modal">
+
+        <div class="header">
+            <h2>Exhibition Summary</h2>
+            <button class="close-btn" (click)="close()">×</button>
+        </div>
+
+        <div class="content">
+
+            <div class="card">
+                <span>Total Sales</span>
+                <h3>₹ {{data.totalSales}}</h3>
+            </div>
+
+            <div class="card">
+                <span>Total Expense</span>
+                <h3>₹ {{data.totalExpense}}</h3>
+            </div>
+
+            <div class="card">
+                <span>Total Discount</span>
+                <h3>₹ {{data.totalDiscount}}</h3>
+            </div>
+
+            <div class="card">
+                <span>Net Amount</span>
+                <h3>₹ {{data.netAmount}}</h3>
+            </div>
+
+            <!-- ✅ PROFIT / LOSS -->
+            <div class="card highlight" [ngClass]="{
+             'profit': data.profit > 0,
+             'loss': data.loss > 0
+           }">
+
+                <span>{{ data.profit > 0 ? 'Profit' : 'Loss' }}</span>
+
+                <h2>
+                    <span *ngIf="data.profit > 0">+ ₹{{data.profit}}</span>
+                    <span *ngIf="data.loss > 0">- ₹{{data.loss}}</span>
+                </h2>
+
+            </div>
+
+        </div>
+
     </div>
 </div>
