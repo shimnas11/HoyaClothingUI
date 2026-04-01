@@ -39,7 +39,7 @@ export class Authservice {
     }).subscribe({
       next: (res: any) => {
         localStorage.setItem('token', res.token);
-        this.router.navigate(['dashboard']);
+        this.router.navigate(['products']);
       },
       error: () => {
         alert('Invalid credentials');

@@ -23,6 +23,22 @@
   gap: 16px;
   padding: 0 20px;
   border-bottom: 1px solid #e2e8f0;
+   position: sticky;
+  top: 0;
+  z-index: 1000; /* ensures it stays above content */
+  background: white; 
+}
+.mat-sidenav-content {
+  overflow: auto;
+}
+
+@media (max-width: 768px) {
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: white;
+  }
 }
 
 

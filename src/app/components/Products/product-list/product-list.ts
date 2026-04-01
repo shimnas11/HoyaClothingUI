@@ -26,7 +26,7 @@ export class ProductList implements OnInit {
 
   // ✅ PAGINATION
   currentPage = signal(1);
-  pageSize = 5;
+  pageSize = 9;
 
   // ✅ FILTERED + SORTED DATA
   filteredProducts = computed(() => {

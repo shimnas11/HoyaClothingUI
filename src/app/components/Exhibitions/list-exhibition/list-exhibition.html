@@ -23,7 +23,7 @@
 
                 <tr *ngFor="let exhibition of paginatedExhibitions; trackBy: trackByCode" class="row-entry">
 
-                    <td class="name">{{exhibition.name}}</td>
+                    <td (click)="detailExhibition(exhibition)" class=" name">{{exhibition.name}}</td>
 
                     <td>{{exhibition.place}}</td>
 
@@ -126,8 +126,8 @@
                 <span>{{ data.profit > 0 ? 'Profit' : 'Loss' }}</span>
 
                 <h2>
-                    <span *ngIf="data.profit > 0">+ ₹{{data.profit}}</span>
-                    <span *ngIf="data.loss > 0">- ₹{{data.loss}}</span>
+                    <span *ngIf="data.profit > 0"> ₹{{data.profit}}</span>
+                    <span *ngIf="data.loss > 0"> ₹{{data.loss}}</span>
                 </h2>
 
             </div>
