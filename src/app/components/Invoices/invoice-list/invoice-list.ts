@@ -39,7 +39,7 @@ export class InvoiceList implements OnInit, OnDestroy {
     Math.ceil(this.invoices().length / this.pageSize)
   );
 
-  constructor(private invoiceService: InvoiceService) {}
+  constructor(private invoiceService: InvoiceService) { }
 
   ngOnInit(): void {
     this.loadInvoices();
@@ -50,6 +50,13 @@ export class InvoiceList implements OnInit, OnDestroy {
 
     this.sub = this.invoiceService.getInvoices().subscribe({
       next: (data) => {
+
+        data.forEach(element => {
+          element.items?.forEach((item: any) => {
+            item.invoiceId = element.id
+          });
+        });
+
         const sorted = [...data].sort((a, b) =>
           new Date(b.invoiceDate).getTime() - new Date(a.invoiceDate).getTime()
         );
@@ -106,5 +113,27 @@ export class InvoiceList implements OnInit, OnDestroy {
     if (event) {
       this.loadInvoices();
     }
+  }
+
+  returnItem(item: any) {
+    // Implement return logic here
+    console.log('Returning item:', item);
+
+    let product = {
+      productId: item.productId,
+      quantity: item.quantity,
+      productSize: item.size
+    };
+
+    this.invoiceService.returnItems(item.invoiceId, product).subscribe({
+      next: (response) => {
+        console.log('Item returned successfully:', response);
+        this.loadInvoices(); // Reload invoices to reflect the return
+      },
+      error: (err) => {
+        console.error('Error returning item:', err);
+      }
+    });
+
   }
 }

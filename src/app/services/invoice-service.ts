@@ -21,4 +21,10 @@ export class InvoiceService {
       responseType: 'text' as 'json'
     });
   }
+
+  returnItems(invoiceId: string, product: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/invoice/return/${invoiceId}`, product, {
+      responseType: 'text' as 'json'
+    });
+  }
 }

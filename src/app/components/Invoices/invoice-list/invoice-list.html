@@ -64,6 +64,7 @@
                                         <th>Qty</th>
                                         <th>Price</th>
                                         <th>Total</th>
+                                        <th>Action</th>
 
                                     </tr>
                                 </thead>
@@ -95,6 +96,11 @@
                                         <td class="price">₹{{item.price}}</td>
 
                                         <td class="price">₹{{item.price}}</td>
+                                        <td>
+
+                                            <button class="delete-btn" (click)="returnItem(item)">
+                                                return
+                                            </button>
 
                                     </tr>
 

@@ -245,7 +245,24 @@
     border-bottom:1px solid #1e293b;
   }
 
-  
+  .delete-btn {
+  background-color: #ef4444; /* red */
+  color: #000000;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.delete-btn:hover {
+  background-color: #dc2626; /* darker red on hover */
+}
+
+.delete-btn:active {
+  transform: scale(0.95);
+}
+
 .modal-backdrop{
   position:fixed;
   top:0;
