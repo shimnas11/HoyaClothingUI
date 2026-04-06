@@ -306,6 +306,44 @@
   box-shadow:0 10px 40px rgba(0,0,0,0.6);
 }
 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dialog {
+  background: #fff;
+  padding: 16px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 350px;
+  text-align: center;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+}
+
+.danger {
+  background: red;
+  color: white;
+}
 
 .cash-bg {
   background-color: yellow; /* yellow */

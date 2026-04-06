@@ -141,3 +141,14 @@
     </div>
 
 </div>
+
+<div class="overlay" *ngIf="showConfirm">
+    <div class="dialog">
+        <p>Are you sure you want to return this item?</p>
+
+        <div class="actions">
+            <button (click)="cancel()">Cancel</button>
+            <button class="danger" (click)="confirm()">Return</button>
+        </div>
+    </div>
+</div>

@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InvoiceService } from '../../../services/invoice-service';
 import { Subscription } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-invoice-list',
@@ -14,6 +15,8 @@ import { Subscription } from 'rxjs';
 export class InvoiceList implements OnInit, OnDestroy {
 
   showModal = false;
+  showConfirm = false;
+  selectedItem: any = null;
 
   // ✅ DATA SIGNAL
   invoices = signal<any[]>([]);
@@ -39,7 +42,7 @@ export class InvoiceList implements OnInit, OnDestroy {
     Math.ceil(this.invoices().length / this.pageSize)
   );
 
-  constructor(private invoiceService: InvoiceService) { }
+  constructor(private invoiceService: InvoiceService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.loadInvoices();
@@ -51,11 +54,13 @@ export class InvoiceList implements OnInit, OnDestroy {
     this.sub = this.invoiceService.getInvoices().subscribe({
       next: (data) => {
 
-        data.forEach(element => {
-          element.items?.forEach((item: any) => {
-            item.invoiceId = element.id
+        data
+          .filter((element: any) => element.items && element.items.length > 0)
+          .forEach(element => {
+            element.items?.forEach((item: any) => {
+              item.invoiceId = element.id
+            });
           });
-        });
 
         const sorted = [...data].sort((a, b) =>
           new Date(b.invoiceDate).getTime() - new Date(a.invoiceDate).getTime()
@@ -115,19 +120,18 @@ export class InvoiceList implements OnInit, OnDestroy {
     }
   }
 
-  returnItem(item: any) {
-    // Implement return logic here
-    console.log('Returning item:', item);
+
+  confirm() {
+    this.showConfirm = false;
 
     let product = {
-      productId: item.productId,
-      quantity: item.quantity,
-      productSize: item.size
+      productId: this.selectedItem?.productId,
+      quantity: this.selectedItem?.quantity,
+      productSize: this.selectedItem?.size,
     };
-
-    this.invoiceService.returnItems(item.invoiceId, product).subscribe({
+    this.invoiceService.returnItems(this.selectedItem?.invoiceId, product).subscribe({
       next: (response) => {
-        console.log('Item returned successfully:', response);
+        this.toastr.success('Item returned successfully');
         this.loadInvoices(); // Reload invoices to reflect the return
       },
       error: (err) => {
@@ -136,4 +140,18 @@ export class InvoiceList implements OnInit, OnDestroy {
     });
 
   }
+
+  cancel() {
+    this.showConfirm = false;
+    this.selectedItem = null;
+  }
+
+
+  returnItem(item: any) {
+    // Implement return logic here
+    this.selectedItem = null;
+    this.selectedItem = item;
+    this.showConfirm = true;
+  }
+
 }
