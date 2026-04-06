@@ -28,7 +28,7 @@ export class InvoiceList implements OnInit, OnDestroy {
 
   // ✅ PAGINATION SIGNALS
   currentPage = signal(1);
-  pageSize = 5;
+  pageSize = 8;
 
   // ✅ PAGINATED DATA
   paginatedInvoices = computed(() => {
@@ -54,15 +54,17 @@ export class InvoiceList implements OnInit, OnDestroy {
     this.sub = this.invoiceService.getInvoices().subscribe({
       next: (data) => {
 
-        data
-          .filter((element: any) => element.items && element.items.length > 0)
-          .forEach(element => {
-            element.items?.forEach((item: any) => {
-              item.invoiceId = element.id
-            });
-          });
+        const filtered = data
+          .filter((element: any) => element.items?.length > 0)
+          .map((element: any) => ({
+            ...element,
+            items: element.items.map((item: any) => ({
+              ...item,
+              invoiceId: element.id
+            }))
+          }));
 
-        const sorted = [...data].sort((a, b) =>
+        const sorted = filtered.sort((a: any, b: any) =>
           new Date(b.invoiceDate).getTime() - new Date(a.invoiceDate).getTime()
         );
 

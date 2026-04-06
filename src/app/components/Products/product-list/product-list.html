@@ -94,17 +94,16 @@
             Prev
         </button>
 
-        <button *ngFor="let page of [].constructor(totalPages()); let i = index" (click)="goToPage(i + 1)"
-            [class.active]="currentPage() === i + 1">
-
-            {{i + 1}}
-
-        </button>
+        <!-- Only current page -->
+        <span class="page-indicator">
+            {{ currentPage() }} / {{ totalPages() }}
+        </span>
 
         <button (click)="nextPage()" [disabled]="currentPage() === totalPages()">
             Next
         </button>
 
     </div>
+
 
 </div>

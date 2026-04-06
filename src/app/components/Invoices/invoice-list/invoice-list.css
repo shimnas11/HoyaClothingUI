@@ -157,28 +157,34 @@
     border-bottom:1px solid #1e293b;
   }
   
-  
-
   .pagination {
   margin-top: 15px;
   display: flex;
-  gap: 6px;
+  align-items: center;
+  gap: 10px;
 }
 
 .pagination button {
-  padding: 6px 10px;
+  padding: 6px 12px;
   border: none;
   background: #eee;
   cursor: pointer;
+  border-radius: 6px;
 }
 
-.pagination button.active {
-  background: #333;
-  color: white;
+.pagination button:hover {
+  background: #ddd;
 }
 
 .pagination button:disabled {
   opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.page-indicator {
+  font-weight: 600;
+  padding: 6px 10px;
+  color: #000000;
 }
   /* Badges */
   
