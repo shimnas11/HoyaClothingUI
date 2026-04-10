@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, output, SimpleChanges } from '@angular/core';
 
 
 import {
@@ -18,10 +18,10 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './create-product.html',
   styleUrl: './create-product.css',
 })
-export class CreateProduct {
+export class CreateProduct implements OnChanges {
 
   @Output() productAdded = new EventEmitter<boolean>();
-
+  @Input() product: any = null;
 
   productForm: FormGroup;
 
@@ -43,7 +43,34 @@ export class CreateProduct {
     // start with one row
     this.addSize();
   }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['product'] && this.product) {
 
+      // ✅ Clear old sizes
+      this.sizes.clear();
+
+      // ✅ Patch basic fields
+      this.productForm.patchValue({
+        name: this.product.name,
+        code: this.product.code,
+        color: this.product.color,
+        cost: this.product.cost,
+        sellingPrice: this.product.sellingPrice
+      });
+
+      // ✅ Add sizes dynamically
+      if (this.product.sizes && this.product.sizes.length > 0) {
+        this.product.sizes.forEach((s: any) => {
+          this.sizes.push(this.fb.group({
+            size: [s.size, Validators.required],
+            quantity: [s.quantity, Validators.required]
+          }));
+        });
+      } else {
+        this.addSize();
+      }
+    }
+  }
   get sizes(): FormArray {
     return this.productForm.get('sizes') as FormArray;
   }
@@ -76,18 +103,28 @@ export class CreateProduct {
       ...formValue,
       totalQuantity
     };
+    if (this.product?.id) {
+      payload.id = this.product?.id;
+      this.productService.updateProducts(this.product.id, payload).subscribe({
+        next: () => {
+          this.toastr.success('Product updated successfully');
+          this.productAdded.emit(true);
+        },
+        error: err => console.error(err)
+      });
+    } else {
+      this.productService.addProducts(payload).subscribe({
+        next: () => {
+          this.toastr.success('Product added successfully');
+          this.productForm.reset();
+          this.sizes.clear();
+          this.addSize();
+          this.productAdded.emit(true);
 
-    this.productService.addProducts(payload).subscribe({
-      next: () => {
-        this.toastr.success('Product added successfully');
-        this.productForm.reset();
-        this.sizes.clear();
-        this.addSize();
-        this.productAdded.emit(true);
-
-      },
-      error: err => console.error(err)
-    });
+        },
+        error: err => console.error(err)
+      });
+    }
   }
 
   closeModal() {

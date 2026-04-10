@@ -13,7 +13,7 @@ export class ProductService {
   // ✅ SIGNAL STORE
   products = signal<any[]>([]);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // ✅ LOAD FROM API
   loadProducts() {
@@ -36,6 +36,13 @@ export class ProductService {
   // ✅ ADD PRODUCT
   addProducts(product: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/products`, product, {
+      responseType: 'text' as 'json'
+    });
+  }
+
+  // ✅ ADD PRODUCT
+  updateProducts(id: string, product: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/products/Update/${id}`, product, {
       responseType: 'text' as 'json'
     });
   }

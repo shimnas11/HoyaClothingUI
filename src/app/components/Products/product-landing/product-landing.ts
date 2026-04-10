@@ -35,4 +35,8 @@ export class ProductLanding {
 
 
   }
+
+  refreshProduct() {
+    this.productService.refreshProducts();
+  }
 }

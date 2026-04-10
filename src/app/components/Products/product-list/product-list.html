@@ -12,7 +12,12 @@
     <div class="orders-card" *ngIf="products().length > 0">
         <div class="order-item" *ngFor="let product of paginatedProducts(); trackBy: trackByCode">
             <div class="left">
-                <div class="name">{{ product.code }} - {{ product.name}} </div>
+                <div style="display: flex;">
+                    <button class="edit-btn">
+                        <i class="edit-btn" (click)="editProduct(product)">✎</i>
+                    </button>
+                    <div class="name">{{ product.code }} - {{ product.name}} </div>
+                </div>
                 <div class="items"> <b style="font-weight: bolder">
                         {{product.totalQuantity}}</b>
                     Item(s) </div>
@@ -22,6 +27,7 @@
             </div>
             <div class="right">
                 <div class="amount">₹{{ product.sellingPrice }}</div>
+
                 <div class="time">
                     <ng-container *ngFor="let s of product.sizes">
                         <span *ngIf="s.quantity > 0" class="size-badge">
@@ -30,6 +36,9 @@
                     </ng-container>
                 </div>
             </div>
+
+
+
         </div>
     </div>
     <!-- <div *ngIf="products().length > 0" class="table-wrapper">
@@ -107,3 +116,10 @@
 
 
 </div>
+
+
+    <div class="modal-backdrop" *ngIf="showModal">
+        <div class="modal">
+            <app-create-product [product]="product" (productAdded)="closeModal($event)"></app-create-product>
+        </div>
+    </div>

@@ -8,7 +8,7 @@
         </button>
     </div>
 
-    <app-product-list></app-product-list>
+    <app-product-list (productEdited)="refreshProduct()"></app-product-list>
 
     <div class="modal-backdrop" *ngIf="showModal">
         <div class="modal">

@@ -1,19 +1,23 @@
-import { Component, Inject, OnInit, PLATFORM_ID, computed, signal } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output, PLATFORM_ID, computed, signal } from '@angular/core';
 import { ProductService } from '../../../services/product-service';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MatIcon } from '@angular/material/icon';
+import { CreateProduct } from '../create-product/create-product';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, CreateProduct],
   templateUrl: './product-list.html',
   styleUrl: './product-list.css'
 })
 export class ProductList implements OnInit {
 
   products!: any;
-
+  product: any = null;
+  showModal = false;
+  @Output() productEdited = new EventEmitter<boolean>();
   constructor(
     private productService: ProductService,
     @Inject(PLATFORM_ID) private platformId: object
@@ -96,6 +100,17 @@ export class ProductList implements OnInit {
   trackByCode(index: number, item: any) {
     return item.code;
   }
+
+  editProduct(product: any) {
+    this.product = product;
+    this.showModal = true;
+  }
+
+  closeModal(event: boolean) {
+    this.showModal = false;
+    this.product = null;
+    this.productEdited.emit(event);
+  }
 }
 
 export interface Product {
@@ -110,4 +125,6 @@ export interface Product {
     size: string;
     quantity: number;
   }[];
+
+
 }
