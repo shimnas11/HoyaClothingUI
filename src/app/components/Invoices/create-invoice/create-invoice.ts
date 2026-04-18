@@ -49,7 +49,7 @@ export class CreateInvoice implements OnInit {
     });
 
     this.invoiceForm = this.fb.group({
-      discount: [0, [Validators.min(0)]],
+      discount: [0],
       paymentMode: ['cash', Validators.required],
       products: this.fb.array([])
     });

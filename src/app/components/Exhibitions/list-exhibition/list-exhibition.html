@@ -120,14 +120,14 @@
             <!-- ✅ PROFIT / LOSS -->
             <div class="card highlight" [ngClass]="{
              'profit': data.profit > 0,
-             'loss': data.loss > 0
+             'loss': data.profit <= 0
            }">
 
                 <span>{{ data.profit > 0 ? 'Profit' : 'Loss' }}</span>
 
                 <h2>
                     <span *ngIf="data.profit > 0"> ₹{{data.profit}}</span>
-                    <span *ngIf="data.loss > 0"> ₹{{data.loss}}</span>
+                    <span *ngIf="data.profit <= 0"> ₹{{data.profit}}</span>
                 </h2>
 
             </div>
