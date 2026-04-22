@@ -6,10 +6,19 @@ import { DatePipe } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ExhibitionOverviewModal } from '../../../models/overview-modal';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
+import { RefundModal } from '../refund-modal/refund-modal';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-list-exhibition',
-  imports: [DatePipe, CommonModule, ReactiveFormsModule],
+  imports: [DatePipe, CommonModule, RefundModal, ReactiveFormsModule, MatIcon, MatTooltipModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatButtonModule, FormsModule],
   templateUrl: './list-exhibition.html',
   styleUrl: './list-exhibition.css',
 })
@@ -20,16 +29,20 @@ export class ListExhibition implements OnInit, OnDestroy {
   exhibitions: any[] = [];          // full data
   paginatedExhibitions: any[] = []; // paginated data
   showModal = false;
+  isRefundOpen = false;
   // ✅ pagination
   currentPage = 1;
   pageSize = 5;
   totalPages = 0;
+  amount = 0;
+  exhibitionId: any;
   data = new ExhibitionOverviewModal();
   constructor(
     private exhibitionService: ExhibitionService,
     @Inject(PLATFORM_ID) private platformId: object,
     private cd: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -89,6 +102,9 @@ export class ListExhibition implements OnInit, OnDestroy {
     this.exhibitionService.getOverview(exhibition.id).subscribe(details => {
       this.data = details;
       this.showModal = true;
+      if (this.data.additional < 0) {
+        this.data.additional = this.data.additional * -1;
+      }
       this.data.profit = this.data.profit > 0 ? this.data.profit : 0;
       this.data.loss = this.data.profit < 0 ? this.data.profit : 0;
       this.data.totalExpense = exhibition.totalExpense + exhibition.bookingCost;
@@ -110,4 +126,33 @@ export class ListExhibition implements OnInit, OnDestroy {
   close() {
     this.showModal = false;
   }
+
+  refund(exhibition: any) {
+    this.exhibitionId = exhibition.id;
+    this.isRefundOpen = true;
+
+  }
+
+  closeRefund() {
+    this.isRefundOpen = false;
+  }
+
+  handleRefund(event: any) {
+    this.isRefundOpen = false;
+    //  this.exhibitionService
+    console.log('Refund submitted:', event);
+
+    this.exhibitionService.addRefund({
+      exhibitionId: this.exhibitionId,
+      amount: event.amount
+    }).subscribe(res => {
+      this.exhibitionId = null;
+      this.toastr.success('Refund added successfully');
+      this.loadExhibitions();
+    }, err => {
+      this.toastr.error('Error adding refund');
+    });
+  }
+
+
 }

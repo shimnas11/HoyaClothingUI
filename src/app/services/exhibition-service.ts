@@ -37,4 +37,10 @@ export class ExhibitionService {
       responseType: 'text' as 'json'
     });
   }
+
+  addRefund(refund: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/exhibitions/refund`, refund, {
+      responseType: 'text' as 'json'
+    });
+  }
 }

@@ -1,0 +1,16 @@
+<div class="overlay" (click)="onClose()">
+    <div class="modal" (click)="$event.stopPropagation()">
+
+        <h2>Refund</h2>
+
+        <label>Enter amount</label>
+        <input type="number" [(ngModel)]="amount" placeholder="Enter amount" />
+
+        <div class="actions">
+
+            <button class="btn cancel-btn" (click)="onClose()">Cancel</button>
+            <button class="btn submit-btn" [disabled]="!amount" (click)="onSubmit()">Submit</button>
+        </div>
+
+    </div>
+</div>

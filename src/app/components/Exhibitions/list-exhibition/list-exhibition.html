@@ -23,7 +23,7 @@
 
                 <tr *ngFor="let exhibition of paginatedExhibitions; trackBy: trackByCode" class="row-entry">
 
-                    <td (click)="detailExhibition(exhibition)" class=" name">{{exhibition.name}}</td>
+                    <td (click)="detailExhibition(exhibition)" class="name">{{exhibition.name}}</td>
 
                     <td>{{exhibition.place}}</td>
 
@@ -46,14 +46,15 @@
 
                     </td>
                     <td>
-                        <button class="edit-btn" (click)="detailExhibition(exhibition)">
-                            Details
-                        </button>
 
-                        <button class="overview-btn" (click)="GetExhibitionOverview(exhibition)">
-                            Overview
-                        </button>
+                        <mat-icon matTooltip="Details" class="icon"
+                            (click)="detailExhibition(exhibition)">info</mat-icon>
 
+
+
+                        <mat-icon matTooltip="Overview" class="icon"
+                            (click)="GetExhibitionOverview(exhibition)">dashboard</mat-icon>
+                        <mat-icon matTooltip="Refund" class="icon" (click)="refund(exhibition)">undo</mat-icon>
 
                     </td>
 
@@ -90,49 +91,36 @@
 <div class="modal-backdrop" *ngIf="showModal">
     <div class="modal">
 
-        <div class="header">
-            <h2>Exhibition Summary</h2>
-            <button class="close-btn" (click)="close()">×</button>
+        <div class="summary-modal">
+            <div class="header">
+                <h2>Exhibition Summary</h2>
+                <span class="close" (click)="close()">×</span>
+            </div>
+
+            <div class="summary-list">
+                <div><span>Total Sales</span><strong>₹ {{data.totalSales}}</strong></div>
+                <div><span>Total Expense</span><strong>₹ {{data.totalExpense}}</strong></div>
+                <div><span>Total Discount</span><strong>₹ {{data.totalDiscount}}</strong></div>
+                <div><span>Additional Amount</span><strong>₹ {{data.additional}}</strong></div>
+                <div><span>Total Items</span><strong>{{data.totalItemSelled}}</strong></div>
+                <div><span>Net Amount</span><strong>₹ {{data.netAmount}}</strong></div>
+            </div>
+
+            <div class="profit">
+                Profit: ₹ {{data.profit}}
+            </div>
         </div>
 
-        <div class="content">
 
-            <div class="card">
-                <span>Total Sales</span>
-                <h3>₹ {{data.totalSales}}</h3>
-            </div>
-
-            <div class="card">
-                <span>Total Expense</span>
-                <h3>₹ {{data.totalExpense}}</h3>
-            </div>
-
-            <div class="card">
-                <span>Total Discount</span>
-                <h3>₹ {{data.totalDiscount}}</h3>
-            </div>
-
-            <div class="card">
-                <span>Net Amount</span>
-                <h3>₹ {{data.netAmount}}</h3>
-            </div>
-
-            <!-- ✅ PROFIT / LOSS -->
-            <div class="card highlight" [ngClass]="{
-             'profit': data.profit > 0,
-             'loss': data.profit <= 0
-           }">
-
-                <span>{{ data.profit > 0 ? 'Profit' : 'Loss' }}</span>
-
-                <h2>
-                    <span *ngIf="data.profit > 0"> ₹{{data.profit}}</span>
-                    <span *ngIf="data.profit <= 0"> ₹{{data.profit}}</span>
-                </h2>
-
-            </div>
-
-        </div>
 
     </div>
 </div>
+
+
+<!-- Refund Button -->
+
+<!-- Modal -->
+@if (isRefundOpen) {
+<app-refund-modal [isOpen]="isRefundOpen" (close)="closeRefund()" (submitRefund)="handleRefund($event)">
+</app-refund-modal>
+}
