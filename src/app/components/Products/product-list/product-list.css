@@ -192,6 +192,23 @@ color: red;
   cursor:pointer;
 }
 
+.search-row {
+  display: flex;
+  /* gap: 10px; */
+  margin-bottom: 15px;
+}
+
+.search-row input {
+  flex: 1;
+  padding: 10px;
+}
+
+.search-row select {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
 @media (max-width: 480px) {
   .orders-card {
     padding: 12px;

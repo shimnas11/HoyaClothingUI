@@ -1,8 +1,18 @@
 <div class="page">
 
-    <!-- 🔍 SEARCH -->
-    <div class="search-box">
+    <div class="search-row">
+        <!-- Search -->
         <input type="text" placeholder="Search by name, code, color..." (input)="onSearch($event.target.value)" />
+
+        <!-- Dropdown -->
+        <select #sizeSelect (change)="onFilterChange(sizeSelect.value)">
+            <option value="">All</option>
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="2XL">2XL</option>
+            <option value="3XL">3XL</option>
+        </select>
     </div>
 
     <div *ngIf="products().length === 0" class="loading">
@@ -118,8 +128,8 @@
 </div>
 
 
-    <div class="modal-backdrop" *ngIf="showModal">
-        <div class="modal">
-            <app-create-product [product]="product" (productAdded)="closeModal($event)"></app-create-product>
-        </div>
+<div class="modal-backdrop" *ngIf="showModal">
+    <div class="modal">
+        <app-create-product [product]="product" (productAdded)="closeModal($event)"></app-create-product>
     </div>
+</div>

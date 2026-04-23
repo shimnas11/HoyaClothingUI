@@ -27,33 +27,54 @@ export class ProductList implements OnInit {
 
   // ✅ SEARCH SIGNAL
   searchText = signal('');
-
+  selectedSize = signal('');
   // ✅ PAGINATION
   currentPage = signal(1);
   pageSize = 9;
 
   // ✅ FILTERED + SORTED DATA
   filteredProducts = computed(() => {
-    const search = this.searchText().toLowerCase();
-    if (search.length === 0) {
+
+
+    if (this.selectedSize().length > 0) {
       return this.products()
+        .filter((p: any) => p.totalQuantity > 0 &&
+          p.sizes?.some((s: any) =>
+            s.size === this.selectedSize() && s.quantity > 0
+
+          )
+        )
         .sort((a: Product, b: Product) =>
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
 
     }
+    else {
+      const search = this.searchText().toLowerCase();
+      if (search.length === 0) {
+        return this.products()
+          .filter((p: any) => p.totalQuantity > 0)
+          .sort((a: Product, b: Product) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
 
-    return this.products()
-      .filter((p: any) =>
-        !search ||
-        p.name.toLowerCase().includes(search) ||
-        p.code.toLowerCase().includes(search) ||
-        p.color.toLowerCase().includes(search)
-      )
-      .sort((a: Product, b: Product) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      );
+      }
+
+
+
+      return this.products()
+        .filter((p: any) => p.totalQuantity > 0 && (
+          !search ||
+          p.name.toLowerCase().includes(search) ||
+          p.code.toLowerCase().includes(search) ||
+          p.color.toLowerCase().includes(search))
+        )
+        .sort((a: Product, b: Product) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+    }
   });
+
 
   // ✅ PAGINATED DATA
   paginatedProducts = computed(() => {
@@ -78,6 +99,11 @@ export class ProductList implements OnInit {
   onSearch(value: string) {
     this.searchText.set(value);
     this.currentPage.set(1); // reset page
+  }
+
+  onFilterChange(value: string) {
+    this.selectedSize.set(value);
+    this.currentPage.set(1);
   }
 
   // ✅ PAGINATION
