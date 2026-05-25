@@ -43,4 +43,10 @@ export class ExhibitionService {
       responseType: 'text' as 'json'
     });
   }
+
+  getDashboardData(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/dashboard/getdashboard`);
+  }
+
+
 }
