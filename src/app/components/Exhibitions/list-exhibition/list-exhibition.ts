@@ -105,8 +105,8 @@ export class ListExhibition implements OnInit, OnDestroy {
       if (this.data.additional < 0) {
         this.data.additional = this.data.additional * -1;
       }
-      this.data.profit = this.data.profit > 0 ? this.data.profit : 0;
-      this.data.loss = this.data.profit < 0 ? this.data.profit : 0;
+      this.data.profit = this.data.profit;
+      this.data.loss = this.data.profit;
       this.data.totalExpense = exhibition.totalExpense + exhibition.bookingCost;
       this.cd.detectChanges();
 

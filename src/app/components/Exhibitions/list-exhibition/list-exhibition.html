@@ -106,14 +106,23 @@
                 <div><span>Net Amount</span><strong>₹ {{data.netAmount}}</strong></div>
             </div>
 
+            @if (data.profit > 0) {
             <div class="profit">
                 Profit: ₹ {{data.profit}}
             </div>
+            }
+
+            @if (data.profit < 0) { <div class="loss">
+                Loss: ₹ {{ data.loss * -1}}
         </div>
 
-
+        }
 
     </div>
+
+
+
+</div>
 </div>
 
 
