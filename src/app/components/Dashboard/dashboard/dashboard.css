@@ -1,9 +1,163 @@
-.dashboard-container {
+.chart-card {
+
+    background: #ffffff;
+    border-radius: 15px;
     padding: 20px;
-    font-size: 24px;
-    font-weight: bold;
-    min-height: 100vh;
+    box-shadow: 0 4px 15px rgba(0,0,0,.08);
+    height: 100%;
+    transition: .3s ease;
+}
+.col-md-4 {
+    flex: 0 0 auto;
+    width: 33.333333%;
+}
+.chart-card:hover {
+
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,.12);
+}
+
+.card-title {
+
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.chart-container {
+
+    position: relative;
+    width: 100%;
+    height: 260px;
+}
+
+.summary-card {
+
     display: flex;
-    justify-content: center;
-    align-items: center
+    flex-direction: column;
+}
+
+.summary-item {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.summary-item:last-child {
+
+    border-bottom: none;
+}
+
+.summary-item span {
+
+    color: #666;
+    font-size: 15px;
+}
+
+.summary-item strong {
+
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.text-success {
+
+    color: #28a745;
+}
+
+.text-danger {
+
+    color: #dc3545;
+}
+
+@media (max-width: 768px) {
+
+    .chart-container {
+
+        height: 220px;
+    }
+
+    .chart-card {
+
+        margin-bottom: 15px;
+    }
+
+}
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+
+@media (max-width: 992px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.summary-header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.eye-btn{
+
+    width:36px;
+    height:36px;
+    border:none;
+    border-radius:50%;
+    background:#f5f5f5;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.eye-btn:hover{
+
+    background:#130101;
+}
+
+.eye-btn i{
+
+    font-size:16px;
+    color:#555;
+}
+
+.summary-item{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 0;
+    border-bottom:1px solid #ececec;
+}
+
+.summary-item:last-child{
+
+    border-bottom:none;
+}
+
+.summary-item span{
+
+    color:#666;
+    font-size:14px;
+}
+
+.summary-item strong{
+
+    font-size:15px;
+    font-weight:600;
 }

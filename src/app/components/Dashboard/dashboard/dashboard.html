@@ -1,3 +1,84 @@
-<div class="dashboard-container">
-    Dashboard works!
+<div class="dashboard-grid ">
+
+    <div class="chart-card">
+        <h5>📦 Inventory Status</h5>
+        <div class="chart-container">
+            <canvas id="inventoryChart"></canvas>
+        </div>
+    </div>
+
+    <div class="chart-card">
+        <h5>💰 Financial Overview</h5>
+        <div class="chart-container">
+            <canvas id="financialChart"></canvas>
+        </div>
+    </div>
+
+    <div class="chart-card summary-card">
+
+        <div class="summary-header">
+            <h5>📊 Business Summary
+
+            </h5>
+
+            <button mat-icon-button (click)="toggleSummary()">
+                <mat-icon>
+                    {{ hideSummary ? 'visibility_off' : 'visibility' }}
+                </mat-icon>
+            </button>
+
+        </div>
+
+        <div class="summary-item">
+            <span>Total Products</span>
+            <strong>{{dashboard.totalProducts}}</strong>
+        </div>
+
+        <div class="summary-item">
+            <span>Total Sold</span>
+            <strong>{{dashboard.totalSold}}</strong>
+        </div>
+
+        <div class="summary-item">
+            <span>Revenue</span>
+            <strong>
+                {{ hideSummary ? '••••••' : (dashboard.revenue | currency:'INR') }}
+            </strong>
+        </div>
+
+        <div class="summary-item">
+            <span>Profit</span>
+            <strong class="text-success">
+                {{ hideSummary ? '••••••' : (dashboard.profit | currency:'INR') }}
+            </strong>
+        </div>
+
+        <div class="summary-item">
+            <span>Expense</span>
+            <strong class="text-danger">
+                {{ hideSummary ? '••••••' : (dashboard.totalExpense | currency:'INR') }}
+            </strong>
+        </div>
+
+        <div class="summary-item">
+            <span>Remaining Stock</span>
+            <strong>{{dashboard.totalProducts - dashboard.totalSold}}</strong>
+        </div>
+
+        <div class="summary-item">
+            <span>Sell Through</span>
+            <strong>
+                {{((dashboard.totalSold/dashboard.totalProducts)*100) | number:'1.1-1'}}%
+            </strong>
+        </div>
+
+        <div class="summary-item">
+            <span>Profit Margin</span>
+            <strong class="text-success">
+                {{ hideSummary ? '••••' : ((dashboard.profit/dashboard.revenue)*100 | number:'1.1-1') + '%' }}
+            </strong>
+        </div>
+
+    </div>
+
 </div>
