@@ -43,7 +43,7 @@
 
         <div class="summary-item">
             <span>Total Products</span>
-            <strong>{{dashboard.totalProducts}}</strong>
+            <strong *ngIf="dashboard!=null">{{dashboard.totalProducts}}</strong>
         </div>
 
         <div class="summary-item">
@@ -94,6 +94,68 @@
     </div>
 
 
+
+    <div class="chart-card">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+
+            <h5>
+                🏆 Exhibition Performance
+            </h5>
+
+        </div>
+
+        <table class="table table-hover align-middle">
+
+            <thead>
+
+                <tr>
+                    <th>Exhibition</th>
+                    <!-- <th class="text-end">Sales</th>
+                    <th class="text-end">Profit</th> -->
+                    <th style="width:80px;"></th>
+                    <th>Margin</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr *ngFor="let item of exhibitions">
+
+                    <td (click)="detailExhibition(item.exhibitionId)" style="cursor: pointer;">
+                        <strong>{{item.name}}</strong>
+                    </td>
+
+
+
+                    <td>
+
+                        <div class="d-flex align-items-center">
+
+                            <div class="progress">
+
+                                <mat-progress-bar mode="determinate" [value]="getProgressWidth(item)"
+                                    [color]="getProgressColor(item)">
+                                </mat-progress-bar>
+
+                            </div>
+
+
+
+                        </div>
+
+                    </td>
+                    <td><span class="fw-bold">
+                            {{getProfitMargin(item)}}%
+                        </span></td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
 
 
 
