@@ -41,7 +41,7 @@ export class ProductList implements OnInit {
         return this.products()
           .filter((p: any) => p.totalQuantity > 0 &&
             p.sizes?.some((s: any) =>
-              s.size === this.selectedSize() && s.quantity > 0
+              s.size.toLowerCase().includes(this.selectedSize()) && s.quantity > 0
               && (p.name.toLowerCase().includes(search) ||
                 p.code.toLowerCase().includes(search) ||
                 p.color.toLowerCase().includes(search))
@@ -57,8 +57,7 @@ export class ProductList implements OnInit {
         return this.products()
           .filter((p: any) => p.totalQuantity > 0 &&
             p.sizes?.some((s: any) =>
-              s.size === this.selectedSize() && s.quantity > 0
-
+              s.size.toLowerCase().includes(this.selectedSize().toLowerCase()) && s.quantity > 0
             )
           )
           .sort((a: Product, b: Product) =>
