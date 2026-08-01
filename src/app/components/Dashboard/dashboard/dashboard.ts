@@ -13,7 +13,9 @@ Chart.register(...registerables);
 })
 export class DashboardComponent implements OnInit {
   financialChart!: Chart;
+  hotSellingChart!: Chart;
   hideSummary = false;
+  hotSellingProducts: any[] = [];
   dashboardService = inject(ExhibitionService);
   dashboard: any;
   constructor(private cdr: ChangeDetectorRef) { }
@@ -25,7 +27,10 @@ export class DashboardComponent implements OnInit {
       this.createFinancialChart();
       this.cdr.detectChanges();
     });
+    this.loadHotSellingProducts();
   }
+
+
 
   toggleSummary() {
     this.hideSummary = !this.hideSummary;
@@ -200,5 +205,100 @@ export class DashboardComponent implements OnInit {
   }
 
 
+  loadHotSellingProducts() {
+
+    this.dashboardService
+      .getHotSellingProducts()
+      .subscribe(res => {
+
+        this.hotSellingProducts = res;
+
+        this.createHotSellingChart();
+
+      });
+
+  }
+  createHotSellingChart() {
+
+    if (this.hotSellingChart) {
+
+      this.hotSellingChart.destroy();
+
+    }
+
+    this.hotSellingChart = new Chart('hotSellingChart', {
+
+      type: 'bar',
+
+      data: {
+
+        labels: this.hotSellingProducts.map(x => x.productName),
+
+        datasets: [{
+
+          label: 'Revenue',
+
+          data: this.hotSellingProducts.map(x => x.revenue),
+
+          backgroundColor: '#4CAF50',
+
+          borderRadius: 8
+
+        }]
+      },
+
+      options: {
+
+        indexAxis: 'y',
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        plugins: {
+
+          legend: {
+            display: false
+          },
+
+          tooltip: {
+
+            callbacks: {
+
+              label(context) {
+
+                return "₹ " + Number(context.raw).toLocaleString('en-IN');
+
+              }
+
+            }
+
+          }
+
+        },
+
+        scales: {
+
+          x: {
+
+            ticks: {
+
+              callback(value) {
+
+                return "₹" + Number(value).toLocaleString('en-IN');
+
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+
+    });
+
+  }
 
 }

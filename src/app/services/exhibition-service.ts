@@ -48,5 +48,10 @@ export class ExhibitionService {
     return this.http.get<any>(`${this.apiUrl}/dashboard/getdashboard`);
   }
 
+  getHotSellingProducts(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/dashboard/hotSellingProducts`);
+  }
+
+
 
 }

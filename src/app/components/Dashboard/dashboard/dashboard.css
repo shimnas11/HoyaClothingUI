@@ -93,6 +93,10 @@
     gap: 20px;
     padding: 20px;
 }
+.chart-container-large{
+
+    height:420px;
+}
 
 @media (max-width: 992px) {
     .dashboard-grid {
