@@ -35,22 +35,39 @@ export class ProductList implements OnInit {
   // ✅ FILTERED + SORTED DATA
   filteredProducts = computed(() => {
 
-
+    const search = this.searchText().toLowerCase();
     if (this.selectedSize().length > 0) {
-      return this.products()
-        .filter((p: any) => p.totalQuantity > 0 &&
-          p.sizes?.some((s: any) =>
-            s.size === this.selectedSize() && s.quantity > 0
+      if (search.length > 0) {
+        return this.products()
+          .filter((p: any) => p.totalQuantity > 0 &&
+            p.sizes?.some((s: any) =>
+              s.size === this.selectedSize() && s.quantity > 0
+              && (p.name.toLowerCase().includes(search) ||
+                p.code.toLowerCase().includes(search) ||
+                p.color.toLowerCase().includes(search))
 
+
+            )
           )
-        )
-        .sort((a: Product, b: Product) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
+          .sort((a: Product, b: Product) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+      }
+      else {
+        return this.products()
+          .filter((p: any) => p.totalQuantity > 0 &&
+            p.sizes?.some((s: any) =>
+              s.size === this.selectedSize() && s.quantity > 0
 
+            )
+          )
+          .sort((a: Product, b: Product) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+      }
     }
     else {
-      const search = this.searchText().toLowerCase();
+
       if (search.length === 0) {
         return this.products()
           .filter((p: any) => p.totalQuantity > 0)
