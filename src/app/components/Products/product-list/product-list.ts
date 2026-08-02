@@ -34,64 +34,38 @@ export class ProductList implements OnInit {
 
   // ✅ FILTERED + SORTED DATA
   filteredProducts = computed(() => {
+    const search = this.searchText().trim().toLowerCase();
+    const selectedSize = this.selectedSize().trim().toLowerCase();
 
-    const search = this.searchText().toLowerCase();
-    if (this.selectedSize().length > 0) {
-      if (search.length > 0) {
-        return this.products()
-          .filter((p: any) => p.totalQuantity > 0 &&
-            p.sizes?.some((s: any) =>
-              s.size.toLowerCase().includes(this.selectedSize()) && s.quantity > 0
-              && (p.name.toLowerCase().includes(search) ||
-                p.code.toLowerCase().includes(search) ||
-                p.color.toLowerCase().includes(search))
+    return this.products()
+      .filter((p: Product) => {
+        // Product must be in stock
+        if (p.totalQuantity <= 0) return false;
 
-
-            )
-          )
-          .sort((a: Product, b: Product) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          );
-      }
-      else {
-        return this.products()
-          .filter((p: any) => p.totalQuantity > 0 &&
-            p.sizes?.some((s: any) =>
-              s.size.toLowerCase().includes(this.selectedSize().toLowerCase()) && s.quantity > 0
-            )
-          )
-          .sort((a: Product, b: Product) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          );
-      }
-    }
-    else {
-
-      if (search.length === 0) {
-        return this.products()
-          .filter((p: any) => p.totalQuantity > 0)
-          .sort((a: Product, b: Product) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          );
-
-      }
-
-
-
-      return this.products()
-        .filter((p: any) => p.totalQuantity > 0 && (
+        // Search condition
+        const matchesSearch =
           !search ||
           p.name.toLowerCase().includes(search) ||
           p.code.toLowerCase().includes(search) ||
-          p.color.toLowerCase().includes(search))
-        )
-        .sort((a: Product, b: Product) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-    }
+          p.color.toLowerCase().includes(search);
+
+        // Size condition
+        const matchesSize =
+          !selectedSize ||
+          p.sizes?.some(
+            (s: any) =>
+              s.quantity > 0 &&
+              s.size.toLowerCase() === selectedSize
+          );
+
+        return matchesSearch && matchesSize;
+      })
+      .sort(
+        (a: Product, b: Product) =>
+          new Date(b.createdAt).getTime() -
+          new Date(a.createdAt).getTime()
+      );
   });
-
-
   // ✅ PAGINATED DATA
   paginatedProducts = computed(() => {
     const data = this.filteredProducts();
