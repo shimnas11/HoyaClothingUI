@@ -3,6 +3,7 @@ import { Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { CreateDamage, Product } from '../models/product.model';
+import { DamagedProducts } from '../components/Products/damaged-products/damaged-products';
 
 @Injectable({
   providedIn: 'root',
@@ -61,4 +62,11 @@ export class ProductService {
       `${this.apiUrl}/products/${id}`
     );
   }
+
+  getDamageProducts() {
+    return this.http.get<any[]>(
+      `${this.apiUrl}/damage`
+    );
+  }
+
 }

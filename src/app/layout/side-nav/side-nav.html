@@ -3,21 +3,33 @@
     <a routerLink="/dashboard" routerLinkActive="active">
         Dashboard
     </a>
-
     <a routerLink="/products" routerLinkActive="active">
         Products
     </a>
-
     <a routerLink="/invoices" routerLinkActive="active">
         Invoices
     </a>
 
-
-
-
     <a routerLink="/exhibitions" routerLinkActive="active">
         Exhibitions
     </a>
+    <!-- Products Menu -->
+    <div class="menu-item">
 
+        <div class="menu-header" (click)="toggleMenu()">
 
+            <span>Master</span>
+
+            <span class="arrow">
+                {{ isExpanded ? '▼' : '▶' }}
+            </span>
+
+        </div>
+
+        <div class="submenu" *ngIf="isExpanded">
+            <a routerLink="/damages" routerLinkActive="active">
+                Damaged Products
+            </a>
+        </div>
+    </div>
 </div>

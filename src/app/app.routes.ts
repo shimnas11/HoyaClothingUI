@@ -9,6 +9,7 @@ import { MainLayoutComponent } from './layout/main-layout/main-layout';
 import { ExhibitionLanding } from './components/Exhibitions/exhibition-landing/exhibition-landing';
 import { DetailExhition } from './components/Exhibitions/detail-exhibition/detail-exhition';
 import { ProductDetailComponent } from './components/Products/product-detail/product-detail';
+import { DamagedProducts } from './components/Products/damaged-products/damaged-products';
 
 
 export const routes = [
@@ -42,6 +43,11 @@ export const routes = [
             {
                 path: 'details/:id',
                 component: DetailExhition,
+                renderMode: 'client'
+            },
+            {
+                path: 'damages',
+                component: DamagedProducts,
                 renderMode: 'client'
             },
         ]
