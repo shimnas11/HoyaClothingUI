@@ -6,7 +6,7 @@
 
         <div class="card blue">
 
-            <h3 style="color: white;">{{totalItems}}
+            <h3 style="color: white;">{{totalItems()}}
 
                 <span> Items</span>
             </h3>
@@ -15,7 +15,7 @@
 
         <div class="card red">
 
-            <h3 style="color: white;">{{totalLoss | currency:'INR'}}</h3>
+            <h3 style="color: white;">{{totalLoss() | currency:'INR'}}</h3>
 
             <span>Total Inventory Loss</span>
 
