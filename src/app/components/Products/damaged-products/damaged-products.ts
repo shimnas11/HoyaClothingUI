@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../../services/product-service';
 
@@ -28,7 +28,9 @@ export class DamagedProducts implements OnInit {
   pageSize = 10;
   totalPages = 1;
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
     this.load();
@@ -119,7 +121,7 @@ export class DamagedProducts implements OnInit {
       start,
       start + this.pageSize
     );
-
+    this.cdr.detectChanges();
   }
 
   nextPage(): void {

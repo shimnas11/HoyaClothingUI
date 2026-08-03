@@ -22,76 +22,77 @@
         </div>
 
     </div>
+    <div class="table-container">
+        <input class="search" placeholder="Search..." [(ngModel)]="search" (input)="filter()">
 
-    <input class="search" placeholder="Search..." [(ngModel)]="search" (input)="filter()">
+        <table>
 
-    <table>
+            <thead>
 
-        <thead>
+                <tr>
 
-            <tr>
+                    <th>Date</th>
 
-                <th>Date</th>
+                    <th>Product</th>
 
-                <th>Product</th>
+                    <th>Color</th>
 
-                <th>Color</th>
+                    <th>Size</th>
 
-                <th>Size</th>
+                    <th>Qty</th>
 
-                <th>Qty</th>
-
-                <th>Buying Price</th>
+                    <th>Buying Price</th>
 
 
-                <th>Reason</th>
+                    <th>Reason</th>
 
-            </tr>
+                </tr>
 
-        </thead>
+            </thead>
 
-        <tbody>
+            <tbody>
 
-            <tr *ngFor="let item of pagedProducts; let i = index">
+                <tr *ngFor="let item of pagedProducts; let i = index">
 
-                <td>{{item.createdAt | date:'dd-MMM-yyyy'}}</td>
+                    <td>{{item.createdAt | date:'dd-MMM-yyyy'}}</td>
 
-                <td>{{item.productName}}</td>
+                    <td>{{item.productName}}</td>
 
-                <td>{{item.color}}</td>
+                    <td>{{item.color}}</td>
 
-                <td>{{item.size}}</td>
+                    <td>{{item.size}}</td>
 
-                <td>{{item.quantity}}</td>
+                    <td>{{item.quantity}}</td>
 
-                <td>{{item.buyingPrice | currency:'INR'}}</td>
-                <td>{{item.reason || '-'}}</td>
+                    <td>{{item.buyingPrice | currency:'INR'}}</td>
+                    <td>{{item.reason || '-'}}</td>
 
-            </tr>
+                </tr>
 
-        </tbody>
+            </tbody>
 
-    </table>
-    <div class="pagination" *ngIf="totalPages > 1">
+        </table>
+        <div class="pagination" *ngIf="totalPages > 1">
 
-        <button (click)="prevPage()" [disabled]="currentPage === 1">
+            <button (click)="prevPage()" [disabled]="currentPage === 1">
 
-            Previous
+                Previous
 
-        </button>
+            </button>
 
-        <span>
+            <span>
 
-            Page {{ currentPage }} of {{ totalPages }}
+                Page {{ currentPage }} of {{ totalPages }}
 
-        </span>
+            </span>
 
-        <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+            <button (click)="nextPage()" [disabled]="currentPage === totalPages">
 
-            Next
+                Next
 
-        </button>
+            </button>
 
+        </div>
     </div>
     <!-- <div class="pagination" *ngIf="totalPages() > 1">
 
