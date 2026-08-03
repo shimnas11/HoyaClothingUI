@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../../services/product-service';
 
@@ -17,21 +17,18 @@ export class DamagedProducts implements OnInit {
 
   damagedProducts: any[] = [];
   filteredProducts: any[] = [];
+  pagedProducts: any[] = [];
 
   search = '';
 
-  totalItems = signal(0);
-  totalLoss = signal(0);
-  currentPage = signal(1);
+  totalItems = 0;
+  totalLoss = 0;
 
+  currentPage = 1;
   pageSize = 10;
+  totalPages = 1;
 
-  totalPages = signal(1);
-
-  pagedProducts: any[] = [];
-  constructor(private productService: ProductService,
-    private cdr: ChangeDetectorRef
-  ) { }
+  constructor(private productService: ProductService) { }
 
   ngOnInit(): void {
     this.load();
@@ -50,24 +47,17 @@ export class DamagedProducts implements OnInit {
 
         this.filteredProducts = [...this.damagedProducts];
 
-        this.totalItems = this.filteredProducts.reduce(
-          (sum, x) => sum + x.quantity,
-          0
-        );
+        this.currentPage = 1;
 
-        this.totalLoss = this.filteredProducts.reduce(
-          (sum, x) => sum + x.totalLoss,
-          0
-        );
-
-        this.totalPages = signal(Math.ceil(this.filteredProducts.length / this.pageSize));
-
+        this.updateSummary();
         this.updatePagination();
-        this.cdr.detectChanges();
+      },
+
+      error: err => {
+        console.error(err);
       }
 
     });
-
 
   }
 
@@ -75,41 +65,68 @@ export class DamagedProducts implements OnInit {
 
     const value = this.search.trim().toLowerCase();
 
-    this.filteredProducts = this.damagedProducts.filter(item =>
+    if (!value) {
 
-      item.productName?.toLowerCase().includes(value) ||
+      this.filteredProducts = [...this.damagedProducts];
 
-      item.color?.toLowerCase().includes(value) ||
+    } else {
 
-      item.size?.toLowerCase().includes(value) ||
+      this.filteredProducts = this.damagedProducts.filter(item =>
 
-      (item.reason ?? '').toLowerCase().includes(value)
+        item.productName?.toLowerCase().includes(value) ||
 
-    );
+        item.color?.toLowerCase().includes(value) ||
 
-    this.currentPage.set(1);
+        item.size?.toLowerCase().includes(value) ||
 
-    this.updatePagination();
+        (item.reason ?? '').toLowerCase().includes(value)
+
+      );
+
+    }
+
+    this.currentPage = 1;
 
     this.updateSummary();
-    this.cdr.detectChanges();
+    this.updatePagination();
+
   }
+
+  updateSummary(): void {
+
+    this.totalItems = this.filteredProducts.reduce(
+      (sum, item) => sum + Number(item.quantity),
+      0
+    );
+
+    this.totalLoss = this.filteredProducts.reduce(
+      (sum, item) => sum + Number(item.totalLoss),
+      0
+    );
+
+  }
+
   updatePagination(): void {
 
-    this.totalPages = signal(Math.ceil(this.filteredProducts.length / this.pageSize));
+    this.totalPages = Math.max(
+      1,
+      Math.ceil(this.filteredProducts.length / this.pageSize)
+    );
 
-    const start = (this.currentPage() - 1) * this.pageSize;
+    const start = (this.currentPage - 1) * this.pageSize;
 
-    const end = start + this.pageSize;
-
-    this.pagedProducts = this.filteredProducts.slice(start, end);
+    this.pagedProducts = this.filteredProducts.slice(
+      start,
+      start + this.pageSize
+    );
 
   }
+
   nextPage(): void {
 
-    if (this.currentPage() < this.totalPages()) {
+    if (this.currentPage < this.totalPages) {
 
-      this.currentPage.set(this.currentPage() + 1);
+      this.currentPage++;
 
       this.updatePagination();
 
@@ -119,29 +136,13 @@ export class DamagedProducts implements OnInit {
 
   prevPage(): void {
 
-    if (this.currentPage() > 1) {
+    if (this.currentPage > 1) {
 
-      this.currentPage.set(this.currentPage() - 1);
+      this.currentPage--;
 
       this.updatePagination();
 
     }
-
-  }
-
-  private updateSummary(): void {
-
-    this.totalItems.set(this.filteredProducts.reduce(
-      (sum: number, item: any) => sum + Number(item.quantity),
-      0
-    ));
-
-    this.totalLoss.set(this.filteredProducts.reduce(
-      (sum: number, item: any) => sum + Number(item.totalLoss),
-      0
-    ));
-    console.log('Total Items:', this.totalItems);
-    console.log('Total Loss:', this.totalLoss);
 
   }
 

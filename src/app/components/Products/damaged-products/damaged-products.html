@@ -6,7 +6,7 @@
 
         <div class="card blue">
 
-            <h3 style="color: white;">{{totalItems()}}
+            <h3 style="color: white;">{{totalItems}}
 
                 <span> Items</span>
             </h3>
@@ -15,7 +15,7 @@
 
         <div class="card red">
 
-            <h3 style="color: white;">{{totalLoss() | currency:'INR'}}</h3>
+            <h3 style="color: white;">{{totalLoss | currency:'INR'}}</h3>
 
             <span>Total Inventory Loss</span>
 
@@ -72,22 +72,42 @@
         </tbody>
 
     </table>
+    <div class="pagination" *ngIf="totalPages > 1">
 
-    <div class="pagination" *ngIf="totalPages() > 1">
+        <button (click)="prevPage()" [disabled]="currentPage === 1">
+
+            Previous
+
+        </button>
+
+        <span>
+
+            Page {{ currentPage }} of {{ totalPages }}
+
+        </span>
+
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+
+            Next
+
+        </button>
+
+    </div>
+    <!-- <div class="pagination" *ngIf="totalPages() > 1">
 
         <button (click)="prevPage()" [disabled]="currentPage() === 1">
             Prev
         </button>
 
         <!-- Only current page -->
-        <span class="page-indicator">
-            {{ currentPage() }} / {{ totalPages() }}
-        </span>
+    <!-- <span class="page-indicator">
+        {{ currentPage() }} / {{ totalPages() }}
+    </span> -->
 
-        <button (click)="nextPage()" [disabled]="currentPage() === totalPages()">
-            Next
-        </button>
+    <!-- <button (click)="nextPage()" [disabled]="currentPage() === totalPages()">
+        Next
+    </button> -->
 
-    </div>
+    <!-- </div> -->
 
 </div>
