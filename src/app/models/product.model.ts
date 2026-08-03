@@ -13,3 +13,11 @@ export interface Product {
     sizes: ProductSize[];
     totalQuantity: number;
 }
+export interface CreateDamage {
+    productId: string;
+    size: string | null;
+    quantity: number;
+    reason?: string;
+    remarks?: string;
+    adjustmentType: string;
+}

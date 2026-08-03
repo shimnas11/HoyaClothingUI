@@ -8,6 +8,7 @@ import { AuthLayoutComponent } from './layout/auth-layout/auth-layout';
 import { MainLayoutComponent } from './layout/main-layout/main-layout';
 import { ExhibitionLanding } from './components/Exhibitions/exhibition-landing/exhibition-landing';
 import { DetailExhition } from './components/Exhibitions/detail-exhibition/detail-exhition';
+import { ProductDetailComponent } from './components/Products/product-detail/product-detail';
 
 
 export const routes = [
@@ -21,6 +22,10 @@ export const routes = [
             {
                 path: 'products',
                 component: ProductLanding, renderMode: 'client'
+            },
+            {
+                path: 'products/:id',
+                component: ProductDetailComponent
             },
             {
                 path: 'invoices',

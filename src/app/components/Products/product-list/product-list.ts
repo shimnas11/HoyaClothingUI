@@ -4,11 +4,11 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
 import { CreateProduct } from '../create-product/create-product';
-
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, CreateProduct],
+  imports: [CommonModule, RouterModule, FormsModule, CreateProduct],
   templateUrl: './product-list.html',
   styleUrl: './product-list.css'
 })

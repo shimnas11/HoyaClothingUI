@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { CreateDamage, Product } from '../models/product.model';
 
 @Injectable({
   providedIn: 'root',
@@ -45,5 +46,19 @@ export class ProductService {
     return this.http.put<any>(`${this.apiUrl}/products/Update/${id}`, product, {
       responseType: 'text' as 'json'
     });
+  }
+  markProductDamaged(model: CreateDamage) {
+    return this.http.post<string>(
+      `${this.apiUrl}/damage`,
+      model, {
+      responseType: 'text' as 'json'
+    }
+    );
+  }
+
+  getProductById(id: string) {
+    return this.http.get<Product>(
+      `${this.apiUrl}/products/${id}`
+    );
   }
 }

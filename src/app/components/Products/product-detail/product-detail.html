@@ -1,0 +1,168 @@
+<div class="details-container">
+
+    <mat-card class="product-card" *ngIf="product">
+
+        <div class="header">
+
+            <div class="product-info">
+
+                <h2>{{ product.name }}</h2>
+
+                <span class="product-code">{{ product.code }}</span>
+
+            </div>
+
+            <div class="stock-chip">
+                In Stock
+            </div>
+
+        </div>
+
+        <div class="info-grid">
+
+            <div class="info-item">
+                <span class="label">Color</span>
+                <span class="value">{{ product.color }}</span>
+            </div>
+
+
+
+            <div class="info-item">
+                <span class="label">Selling Price</span>
+                <span class="value">
+                    {{ product.sellingPrice | currency:'INR':'symbol':'1.0-0' }}
+                </span>
+            </div>
+
+            <div class="info-item">
+                <span class="label">Total Stock</span>
+                <span class="value">{{ product.totalQuantity }}</span>
+            </div>
+
+        </div>
+
+    </mat-card>
+
+    <mat-card class="size-card">
+
+        <h3>Available Sizes</h3>
+
+        <table class="size-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Size</th>
+
+                    <th>Quantity</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr *ngFor="let size of product.sizes">
+                    @if (size.quantity >0) {
+                    <td>{{ size.size }}</td>
+
+                    <td>{{ size.quantity }}</td>
+                    }
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </mat-card>
+
+    <div class="actions">
+
+
+
+        <button mat-raised-button color="warn" (click)="markDamage()">
+
+            <mat-icon>warning</mat-icon>
+
+            Mark as Damaged
+
+        </button>
+
+    </div>
+
+</div>
+
+<!-- Damage Modal -->
+
+<div class="modal-overlay" *ngIf="showDamageModal">
+
+    <div class="modal">
+
+        <h2>Mark Product as Damaged</h2>
+
+        <div class="form-group">
+
+            <label>Size</label>
+
+            <select [(ngModel)]="damageModel.size">
+
+
+                <option [ngValue]="null" selected>-- Select Size --</option>
+
+                @for (s of selectedProduct?.sizes; track s.size) {
+                @if (s.quantity > 0) {
+                <option [value]="s.size">
+                    {{ s.size }} ({{ s.quantity }} in stock)
+                </option>
+                }
+                }
+            </select>
+
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Quantity</label>
+
+            <input type="number" min="1" [(ngModel)]="damageModel.quantity">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Reason</label>
+
+            <input type="text" [(ngModel)]="damageModel.reason">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Remarks</label>
+
+            <textarea rows="4" [(ngModel)]="damageModel.remarks">
+      </textarea>
+
+        </div>
+
+        <div class="modal-actions">
+
+            <button mat-button (click)="showDamageModal = false">
+
+                Cancel
+
+            </button>
+
+            <button mat-raised-button color="warn" (click)="saveDamage()">
+
+                Save
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>

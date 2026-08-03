@@ -27,7 +27,8 @@
                     <button class="edit-btn">
                         <i class="edit-btn" (click)="editProduct(product)">✎</i>
                     </button>
-                    <div class="name">{{ product.code }} - {{ product.name}} </div>
+                    <div class="name" [routerLink]="['/products', product.id]">{{ product.code }} - {{ product.name}}
+                    </div>
                 </div>
                 <div class="items"> <b style="font-weight: bolder">
                         {{product.totalQuantity}}</b>
