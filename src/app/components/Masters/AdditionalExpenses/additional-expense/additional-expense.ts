@@ -106,6 +106,7 @@ export class AdditionalExpense {
   close(event: boolean): void {
 
     this.showModal = false;
+    this.loadExpenses();
 
   }
 }
