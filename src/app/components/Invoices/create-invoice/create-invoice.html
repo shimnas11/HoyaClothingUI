@@ -7,17 +7,12 @@
   <form [formGroup]="invoiceForm" (ngSubmit)="submit()">
 
     <!-- SEARCH -->
-    <input type="text"
-           placeholder="Search product"
-           [formControl]="productSearch"
-           class="search-input" />
+    <input type="text" placeholder="Search product" [formControl]="productSearch" class="search-input" />
 
     <!-- RESULTS LIST -->
     <div class="search-results" *ngIf="filteredProducts.length > 0">
 
-      <div class="result-item"
-           *ngFor="let p of filteredProducts"
-           (click)="onProductSelected(p)">
+      <div class="result-item" *ngFor="let p of filteredProducts" (click)="onProductSelected(p)">
 
         {{p.code}} - {{p.name}}
         <span class="stock">({{p.totalQuantity}})</span>
@@ -41,11 +36,7 @@
           </option>
         </select>
 
-        <input class="qty-input"
-               type="number"
-               formControlName="quantity"
-               min="1"
-               [max]="getMaxQuantity()" />
+        <input class="qty-input" type="number" formControlName="quantity" min="1" [max]="getMaxQuantity()" />
 
         <button type="button" class="tick-btn" (click)="addSelectedProduct()">✓</button>
       </div>
@@ -55,9 +46,7 @@
     <!-- PRODUCT CARDS -->
     <div formArrayName="products" class="product-list">
 
-      <div class="product-card"
-           *ngFor="let p of products.controls; let i=index"
-           [formGroupName]="i">
+      <div class="product-card" *ngFor="let p of products.controls; let i=index" [formGroupName]="i">
 
         <div class="card-header">
           <div class="name">{{p.value.name}}</div>
@@ -95,16 +84,30 @@
     </div>
 
     <!-- DISCOUNT -->
-    <div class="summary">
+    <!-- <div class="summary">
       <label>Discount</label>
       <input type="number" formControlName="discount" class="discount-input">
-    </div>
+    </div>-->
 
     <!-- TOTALS -->
-    <div class="totals">
+    <!--<div class="totals">
       <div>Total: ₹{{totalAmount()}}</div>
       <div class="net">Net: ₹{{netAmount()}}</div>
+    </div> -->
+
+    <div class="totals">
+      <div>Total: ₹{{ totalAmount() }}</div>
+
+      <div class="net-input">
+        <label>Net Amount</label>
+        <input type="number" formControlName="netAmount" class="discount-input" placeholder="Enter final amount" />
+      </div>
+
+      <div class="discount-display">
+        Discount: ₹{{ calculatedDiscount() }}
+      </div>
     </div>
+
 
     <button class="save-btn" type="submit" [disabled]="invoiceForm.invalid">
       Create Invoice

@@ -1,0 +1,123 @@
+.form-page {
+    padding: 30px;
+    color: white;
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+
+    width: 100%;
+    max-width: 500px;
+
+    background: #0f172a;
+    border: 1px solid #1e293b;
+    border-radius: 10px;
+}
+
+h2 {
+    margin: 0;
+    text-align: center;
+    color: white;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #cbd5e1;
+}
+
+input,
+textarea {
+    padding: 10px;
+    background: #020617;
+    border: 1px solid #334155;
+    color: white;
+    border-radius: 6px;
+    width: 100%;
+    font-size: 15px;
+}
+
+input:focus,
+textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.amount-input {
+    font-weight: 600;
+}
+
+.error {
+    color: #ef4444;
+    font-size: 12px;
+}
+
+.save-btn {
+    background: #22c55e;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: .2s;
+}
+
+.save-btn:hover {
+    background: #16a34a;
+}
+
+.save-btn:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+.close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    color: white;
+
+    cursor: pointer;
+    transition: .2s;
+}
+
+.close-btn:hover {
+    color: #ef4444;
+    transform: scale(1.15);
+}
+
+@media (max-width:600px) {
+
+    .form-page {
+        padding: 20px;
+        max-width: 100%;
+    }
+
+    h2 {
+        font-size: 22px;
+    }
+
+    .save-btn {
+        width: 100%;
+    }
+
+}

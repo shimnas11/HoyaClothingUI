@@ -42,15 +42,14 @@
         </div>
 
         <div class="summary-item">
-            <span>Total Products</span>
-            <strong *ngIf="dashboard!=null">{{dashboard.totalProducts}}</strong>
+            <span>Total Products / Total Sold</span>
+            <strong *ngIf="dashboard!=null">{{dashboard.totalProducts}} / {{dashboard.totalSold}}</strong>
         </div>
 
         <div class="summary-item">
-            <span>Total Sold</span>
-            <strong>{{dashboard.totalSold}}</strong>
+            <span>Remaining Stock</span>
+            <strong>{{dashboard.totalProducts - dashboard.totalSold}}</strong>
         </div>
-
         <div class="summary-item">
             <span>Revenue</span>
             <strong>
@@ -72,10 +71,7 @@
             </strong>
         </div>
 
-        <div class="summary-item">
-            <span>Remaining Stock</span>
-            <strong>{{dashboard.totalProducts - dashboard.totalSold}}</strong>
-        </div>
+
 
         <div class="summary-item">
             <span>Sell Through</span>
@@ -83,7 +79,18 @@
                 {{((dashboard.totalSold/dashboard.totalProducts)*100) | number:'1.1-1'}}%
             </strong>
         </div>
-
+        <div class="summary-item">
+            <span>Damage</span>
+            <strong>
+                {{dashboard.totalDamage | number:'1.1-1'}} ({{dashboard.damageCount}} items)
+            </strong>
+        </div>
+        <div class="summary-item">
+            <span>Additional Expenses</span>
+            <strong>
+                {{dashboard.additionalAmount | number:'1.1-1'}}
+            </strong>
+        </div>
         <div class="summary-item">
             <span>Profit Margin</span>
             <strong class="text-success">

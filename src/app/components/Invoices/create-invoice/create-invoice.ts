@@ -36,7 +36,7 @@ export class CreateInvoice implements OnInit {
     private toastr: ToastrService,
     private productService: ProductService,
     private invoiceService: InvoiceService
-  ) {}
+  ) { }
 
   ngOnInit() {
 
@@ -49,10 +49,11 @@ export class CreateInvoice implements OnInit {
     });
 
     this.invoiceForm = this.fb.group({
-      discount: [0],
+      netAmount: [0, [Validators.required, Validators.min(0)]],
       paymentMode: ['cash', Validators.required],
       products: this.fb.array([])
     });
+
 
     this.allProducts = this.productService.products();
 
@@ -80,6 +81,30 @@ export class CreateInvoice implements OnInit {
         )
         .slice(0, 10);
     });
+
+    this.invoiceForm.get('netAmount')?.valueChanges.subscribe(value => {
+
+      const total = this.totalAmount();
+
+      if (value > total) {
+        this.invoiceForm.patchValue(
+          {
+            netAmount: total
+          },
+          { emitEvent: false }
+        );
+      }
+
+      if (value < 0) {
+        this.invoiceForm.patchValue(
+          {
+            netAmount: 0
+          },
+          { emitEvent: false }
+        );
+      }
+
+    });
   }
 
   get products(): FormArray {
@@ -97,6 +122,16 @@ export class CreateInvoice implements OnInit {
 
     this.productSearch.setValue('');
     this.filteredProducts = [];
+  }
+  updateNetAmount() {
+    const total = this.totalAmount();
+
+    this.invoiceForm.patchValue(
+      {
+        netAmount: total
+      },
+      { emitEvent: false }
+    );
   }
 
   getAvailableSizes(product: any) {
@@ -161,6 +196,7 @@ export class CreateInvoice implements OnInit {
 
     this.selectionForm.reset({ quantity: 1 });
     this.selectedProduct = null;
+    this.updateNetAmount();
   }
 
   removeProduct(index: number, event: Event) {
@@ -183,6 +219,7 @@ export class CreateInvoice implements OnInit {
     }
 
     this.products.removeAt(index);
+    this.updateNetAmount();
     event.stopPropagation();
   }
 
@@ -197,9 +234,20 @@ export class CreateInvoice implements OnInit {
   }
 
   netAmount() {
-    return this.totalAmount() - (this.invoiceForm.value.discount || 0);
+    return Number(this.invoiceForm.get('netAmount')?.value || 0);
   }
 
+  calculatedDiscount(): number {
+
+    const total = this.totalAmount();
+    const net = this.netAmount();
+
+    if (net > total) {
+      return 0;
+    }
+
+    return total - net;
+  }
   submit() {
 
     if (this.invoiceForm.invalid) return;
@@ -212,7 +260,7 @@ export class CreateInvoice implements OnInit {
     const payload = {
       netAmount: this.netAmount(),
       exhibitionId: this.exhibitionId || '',
-      discount: this.invoiceForm.value.discount,
+      discount: this.calculatedDiscount(),
       paymentMode: this.invoiceForm.value.paymentMode,
       products: this.products.controls.map(p => ({
         productId: p.value.productId,

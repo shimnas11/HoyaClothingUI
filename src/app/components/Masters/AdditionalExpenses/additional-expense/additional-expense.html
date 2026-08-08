@@ -1,0 +1,94 @@
+<div class="modal-backdrop" *ngIf="showModal">
+    <div class="modal">
+        <!-- <app-create-additional-expense (modalClose)="closeModal($event)"></app-create-additional-expense> -->
+        <app-create-additional-expense (modalClose)="close($event)"></app-create-additional-expense>
+    </div>
+</div>
+<div class="expense-page">
+
+    <div class="page-header">
+        <h2>Expenses</h2>
+
+        <button class="add-btn" (click)="addExpense()">
+            + Add Expense
+        </button>
+    </div>
+
+    <!-- Summary -->
+    <div class="summary-card">
+        <div class="summary-item">
+            <span>Total Expenses</span>
+            <h3 class="totalexpense">{{expenses.length}}</h3>
+        </div>
+
+        <div class="summary-item">
+            <span>Total Amount</span>
+            <h3 class="totalexpense">{{totalExpense() | currency:'INR'}}</h3>
+        </div>
+    </div>
+
+    <!-- Search -->
+    <div class="search-box">
+        <input type="text" placeholder="Search expense..." [(ngModel)]="searchText">
+    </div>
+
+    <<!-- Expense List -->
+        <div class="expense-table">
+
+            <div class="table-header">
+
+                <div>Expense</div>
+                <div>Amount</div>
+                <div>Remark</div>
+                <div>Date</div>
+                <!-- <div>Action</div> -->
+
+            </div>
+
+            <div class="table-row" *ngFor="let expense of filteredExpenses()">
+
+                <div class="expense-name">
+
+
+
+                    <div>
+
+                        <strong>{{expense.expenseName}}</strong>
+
+                    </div>
+
+                </div>
+
+                <div class="amount">
+                    ₹{{expense.amount}}
+                </div>
+
+                <div class="remark">
+                    {{expense.remark || '-'}}
+                </div>
+
+                <div class="date">
+                    {{expense.createdAt | date:'dd MMM yyyy'}}
+                </div>
+
+                <!-- <div>
+
+                    <button class="delete-btn" (click)="deleteExpense(expense.id)">
+
+                        Delete
+
+                    </button>
+
+                </div> -->
+
+            </div>
+
+        </div>
+
+        <div class="empty" *ngIf="filteredExpenses().length===0">
+
+            No Expenses Found
+
+        </div>
+
+</div>
