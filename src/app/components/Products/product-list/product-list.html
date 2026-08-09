@@ -43,7 +43,7 @@
                 <div class="time">
                     <ng-container *ngFor="let s of product.sizes">
                         <span *ngIf="s.quantity > 0" class="size-badge">
-                            {{s.size}}
+                            {{s.size}} ({{s.quantity}})
                         </span>
                     </ng-container>
                 </div>
