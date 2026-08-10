@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, output, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, output, SimpleChanges } from '@angular/core';
 
 
 import {
@@ -11,6 +11,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../../services/product-service';
 import { ToastrService } from 'ngx-toastr';
+import { MasterService } from '../../../services/masters/master-service';
 
 @Component({
   selector: 'app-create-product',
@@ -18,17 +19,23 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './create-product.html',
   styleUrl: './create-product.css',
 })
-export class CreateProduct implements OnChanges {
+export class CreateProduct implements OnChanges, OnInit {
 
   @Output() productAdded = new EventEmitter<boolean>();
   @Input() product: any = null;
 
   productForm: FormGroup;
+  workTypes: any[] = [];
+  setTypes: any[] = [];
+  materialTypes: any[] = [];
+
 
   constructor(
     private fb: FormBuilder,
     private productService: ProductService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private masterService: MasterService,
+    private cdr: ChangeDetectorRef
   ) {
 
     this.productForm = this.fb.group({
@@ -37,12 +44,27 @@ export class CreateProduct implements OnChanges {
       color: ['', Validators.required],
       cost: ['', Validators.required],
       sellingPrice: ['', Validators.required],
+      materialType: [''],
+      setType: [''],
+      workType: [''],
       sizes: this.fb.array([])
     });
 
     // start with one row
     this.addSize();
   }
+
+
+  ngOnInit() {
+    this.masterService.getMasterList().subscribe((result: any) => {
+      this.materialTypes = result.materialTypes;
+      this.setTypes = result.setTypes;
+      this.workTypes = result.workTypes;
+      this.cdr.detectChanges();
+    });
+  }
+
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['product'] && this.product) {
 
@@ -55,7 +77,10 @@ export class CreateProduct implements OnChanges {
         code: this.product.code,
         color: this.product.color,
         cost: this.product.cost,
-        sellingPrice: this.product.sellingPrice
+        sellingPrice: this.product.sellingPrice,
+        materialType: this.product.materialType,
+        setType: this.product.setType,
+        workType: this.product.workType
       });
 
       // ✅ Add sizes dynamically
@@ -73,6 +98,10 @@ export class CreateProduct implements OnChanges {
   }
   get sizes(): FormArray {
     return this.productForm.get('sizes') as FormArray;
+  }
+
+  getWorkTypeDisplay() {
+    return this.workTypes.map(wt => wt.name);
   }
 
   createSize(): FormGroup {

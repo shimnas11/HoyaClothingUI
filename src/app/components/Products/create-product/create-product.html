@@ -11,6 +11,63 @@
 
         <input type="number" placeholder="Cost" formControlName="cost">
         <input type="number" placeholder="Selling Price" formControlName="sellingPrice">
+        <!-- <div class="select-row"> -->
+
+        <!-- Material -->
+        <!-- <div class="field"> -->
+        <!-- <label>Material Type</label> -->
+
+        <select formControlName="materialType">
+            <option [ngValue]="null" selected>
+                -- Select Material --
+            </option>
+
+            <option *ngFor="let material of materialTypes" [value]="material">
+
+                {{ material }}
+
+            </option>
+        </select>
+        <!-- </div> -->
+
+
+        <!-- Set Type -->
+        <!-- <div class="field"> -->
+        <!-- <label>Set Type</label> -->
+
+        <select formControlName="setType">
+            <option [ngValue]="null">
+                -- Select Set Type --
+            </option>
+
+            <option *ngFor="let type of setTypes" [value]="type">
+                {{ type }}
+                <!-- {{ getSetTypeDisplay(type) }} -->
+
+            </option>
+        </select>
+        <!-- </div> -->
+
+
+        <!-- Work Type -->
+        <!-- <div class="field"> -->
+        <!-- <label>Work Type</label> -->
+
+        <select formControlName="workType">
+            <option [ngValue]="null">
+                -- Select Work Type --
+            </option>
+
+            <option *ngFor="let work of workTypes" [value]="work">
+
+                {{ work }}
+
+            </option>
+        </select>
+        <!-- </div> -->
+
+        <!-- </div> -->
+
 
 
         <h3>Sizes</h3>
