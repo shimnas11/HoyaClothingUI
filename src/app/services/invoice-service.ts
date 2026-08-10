@@ -27,4 +27,9 @@ export class InvoiceService {
       responseType: 'text' as 'json'
     });
   }
+  getInvoiceById(id: string) {
+    return this.http.get<any>(
+      `${this.apiUrl}/invoice/${id}`
+    );
+  }
 }

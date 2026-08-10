@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { InvoiceService } from '../../../services/invoice-service';
 import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-invoice-list',
@@ -42,7 +43,7 @@ export class InvoiceList implements OnInit, OnDestroy {
     Math.ceil(this.invoices().length / this.pageSize)
   );
 
-  constructor(private invoiceService: InvoiceService, private toastr: ToastrService) { }
+  constructor(private invoiceService: InvoiceService, private toastr: ToastrService, private router: Router) { }
 
   ngOnInit(): void {
     this.loadInvoices();
@@ -99,6 +100,9 @@ export class InvoiceList implements OnInit, OnDestroy {
   goToPage(page: number) {
     this.currentPage.set(page);
     this.expandedInvoice.set(null);
+  }
+  details(id: string) {
+    this.router.navigate(['/invoices', id]);
   }
 
   toggle(invoice: any) {

@@ -50,12 +50,14 @@
             </thead>
             <tbody>
                 <tr *ngFor="let invoice of paginatedExhibitions; trackBy: trackByInvoice">
-                    <td>{{ invoice.invoiceNumber }}</td>
+                    <td style="cursor: pointer;" (click)="details(invoice.id)">
+                        <b>{{ invoice.invoiceNumber }}</b>
+                    </td>
                     <td>{{ invoice.invoiceDate | date:'medium' }}</td>
                     <td>₹ {{ invoice.totalAmount }}</td>
                     <td>₹ {{ invoice.discountAmount }}</td>
                     <td>₹ {{ invoice.netAmount }}</td>
-                   <td ><span [ngClass]="{
+                    <td><span [ngClass]="{
                                 'cash-bg': invoice.paymentMode === 'cash',
                                 'online-bg': invoice.paymentMode === 'online'
                                 }"> {{invoice.paymentMode}}</span>

@@ -11,6 +11,7 @@ import { DetailExhition } from './components/Exhibitions/detail-exhibition/detai
 import { ProductDetailComponent } from './components/Products/product-detail/product-detail';
 import { DamagedProducts } from './components/Products/damaged-products/damaged-products';
 import { AdditionalExpense } from './components/Masters/AdditionalExpenses/additional-expense/additional-expense';
+import { InvoiceDetailComponent } from './components/Invoices/invoice-details/invoice-details';
 
 
 export const routes = [
@@ -56,6 +57,11 @@ export const routes = [
                 component: AdditionalExpense,
                 renderMode: 'client'
             },
+            {
+                path: 'invoices/:id',
+                component: InvoiceDetailComponent,
+                renderMode: 'client'
+            }
         ]
     },
     // 🔐 Auth layout (no sidebar)

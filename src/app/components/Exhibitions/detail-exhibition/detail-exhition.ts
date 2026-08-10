@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CreateInvoice } from '../../Invoices/create-invoice/create-invoice';
 import { ExhibitionService } from '../../../services/exhibition-service';
 import { CreateExpense } from '../create-expense/create-expense';
@@ -43,14 +43,22 @@ export class DetailExhition {
 
   constructor(private route: ActivatedRoute,
     private cd: ChangeDetectorRef,
-    private exhibitionService: ExhibitionService
+    private exhibitionService: ExhibitionService,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id')!;
     this.getDetails();
   }
-
+  details(id: string) {
+    this.router.navigate(['/invoices', id], {
+      queryParams: {
+        from: 'exhibition',
+        exhibitionId: this.id
+      }
+    });
+  }
   getDetails() {
     if (this.id) {
       this.exhibitionService.getDetails(this.id).subscribe(details => {

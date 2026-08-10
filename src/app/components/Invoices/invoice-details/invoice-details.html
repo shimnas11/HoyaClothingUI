@@ -1,0 +1,376 @@
+<div class="page">
+
+
+
+    <!-- Invoice -->
+    <div class="invoice-container" *ngIf="invoice">
+
+        <!-- Header -->
+        <div class="page-header no-print">
+
+            <button mat-icon-button class="back-button" (click)="goBack()">
+
+                <mat-icon>arrow_back</mat-icon>
+
+            </button>
+
+            <div>
+                <h2>Invoice Details</h2>
+                <p>{{ invoice.invoiceNumber }}</p>
+            </div>
+
+            <button mat-stroked-button class="print-button" (click)="printInvoice()">
+
+                <mat-icon>print</mat-icon>
+                Print Invoice
+
+            </button>
+
+        </div>
+
+
+        <!-- Invoice Card -->
+        <div class="invoice-card">
+
+            <!-- Invoice Top -->
+            <div class="invoice-top">
+
+                <div class="company">
+
+                    <h1>HOYA</h1>
+
+                    <span>Clothing Co.</span>
+
+                </div>
+
+
+                <div class="invoice-title">
+
+                    <h2>INVOICE</h2>
+
+                    <div class="invoice-number">
+                        {{ invoice.invoiceNumber }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Invoice Information -->
+            <div class="invoice-info">
+
+                <div class="info-box">
+
+                    <span class="label">
+                        Invoice Date
+                    </span>
+
+                    <strong>
+                        {{ invoice.invoiceDate | date:'dd MMM yyyy' }}
+                    </strong>
+
+                    <small>
+                        {{ invoice.invoiceDate | date:'hh:mm a' }}
+                    </small>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <span class="label">
+                        Payment Mode
+                    </span>
+
+                    <strong>
+                        {{ getPaymentMode() }}
+                    </strong>
+
+                </div>
+
+
+
+
+                <div class="info-box">
+
+                    <span class="label">
+                        Exhibition
+                    </span>
+
+                    <strong>
+                        {{ invoice.exhibitionId || '-' }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- Items -->
+            <div class="items-section">
+
+                <div class="section-title">
+                    <h3>Items</h3>
+
+                    <span>
+                        {{ totalItems }} Items
+                    </span>
+                </div>
+
+
+                <!-- Desktop Table -->
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>#</th>
+
+                                <th class="product-column">
+                                    Product
+                                </th>
+                                <th>
+                                    Code
+                                </th>
+                                <th>
+                                    Color
+                                </th>
+
+                                <th>
+                                    Size
+                                </th>
+
+                                <th>
+                                    Qty
+                                </th>
+
+                                <th class="text-right">
+                                    Price
+                                </th>
+
+                                <th class="text-right">
+                                    Total
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            <tr *ngFor="
+                                    let item of invoice.items;
+                                    let i = index
+                                ">
+
+                                <td>
+                                    {{ i + 1 }}
+                                </td>
+
+                                <td class="product-name">
+                                    {{ item.productName }}
+                                </td>
+                                <td>
+                                    {{ item.code }}
+                                </td>
+                                <td>
+                                    {{ item.color }}
+                                </td>
+
+                                <td>
+                                    <span class="size">
+                                        {{ item.size }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    {{ item.quantity }}
+                                </td>
+
+                                <td class="text-right">
+                                    ₹{{ item.price | number:'1.2-2' }}
+                                </td>
+
+                                <td class="text-right total">
+                                    ₹{{
+                                    item.price * item.quantity
+                                    | number:'1.2-2'
+                                    }}
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- Mobile Items -->
+                <div class="mobile-items">
+
+                    <div class="mobile-item" *ngFor="let item of invoice.items">
+
+                        <div class="mobile-item-header">
+
+                            <strong>
+                                {{ item.productName }}
+                            </strong>
+
+                            <strong>
+                                ₹{{
+                                item.price * item.quantity
+                                | number:'1.2-2'
+                                }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="mobile-item-details">
+
+                            <span>
+                                Color:
+                                <b>{{ item.color }}</b>
+                            </span>
+
+                            <span>
+                                Size:
+                                <b>{{ item.size }}</b>
+                            </span>
+
+                            <span>
+                                Qty:
+                                <b>{{ item.quantity }}</b>
+                            </span>
+
+                            <span>
+                                Price:
+                                <b>
+                                    ₹{{ item.price | number:'1.2-2' }}
+                                </b>
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Bottom -->
+            <div class="invoice-bottom">
+
+                <div class="thank-you">
+
+                    <h3>Thank You!</h3>
+
+                    <p>
+                        Thank you for shopping with
+                        <strong>Hoya Clothing Co.</strong>
+                    </p>
+
+                    <small>
+                        Please retain this invoice for your records.
+                    </small>
+
+                </div>
+
+
+                <!-- Summary -->
+                <div class="summary">
+
+                    <div class="summary-row">
+
+                        <span>
+                            Subtotal
+                        </span>
+
+                        <strong>
+                            ₹{{ subtotal | number:'1.2-2' }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-row discount">
+
+                        <span>
+                            Discount
+                        </span>
+
+                        <strong>
+                            - ₹{{
+                            invoice.discountAmount
+                            | number:'1.2-2'
+                            }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="divider"></div>
+
+
+                    <div class="summary-row grand-total">
+
+                        <span>
+                            Grand Total
+                        </span>
+
+                        <strong>
+                            ₹{{
+                            finalAmount
+                            | number:'1.2-2'
+                            }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Footer -->
+            <div class="invoice-footer">
+
+                <span>
+                    Invoice ID: {{ invoice.id }}
+                </span>
+
+                <span>
+                    Hoya Clothing Co.
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Not Found -->
+    <div class="not-found" *ngIf="!invoice">
+
+        <mat-icon>receipt_long</mat-icon>
+
+        <h3>Invoice not found</h3>
+
+        <button mat-raised-button (click)="goBack()">
+
+            Back to Invoices
+
+        </button>
+
+    </div>
+
+</div>

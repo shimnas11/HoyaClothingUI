@@ -32,7 +32,9 @@
                             </button>
                         </td>
 
-                        <td class="invoice-table-th">{{invoice.invoiceNumber}}</td>
+                        <td class="invoice-table-th " style="cursor: pointer;" (click)="details(invoice.id)">
+                            <b>{{ invoice.invoiceNumber }}</b>
+                        </td>
 
                         <td class="invoice-table-th">{{invoice.invoiceDate | date}}</td>
 
