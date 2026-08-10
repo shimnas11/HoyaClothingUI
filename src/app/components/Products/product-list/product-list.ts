@@ -1,25 +1,34 @@
-import { Component, EventEmitter, Inject, OnInit, Output, PLATFORM_ID, computed, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Inject, OnInit, Output, PLATFORM_ID, computed, signal } from '@angular/core';
 import { ProductService } from '../../../services/product-service';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
 import { CreateProduct } from '../create-product/create-product';
 import { RouterModule } from '@angular/router';
+import { MasterService } from '../../../services/masters/master-service';
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, CreateProduct],
+  imports: [CommonModule, RouterModule, FormsModule, CreateProduct, MatIcon],
   templateUrl: './product-list.html',
   styleUrl: './product-list.css'
 })
 export class ProductList implements OnInit {
+  materialTypes: string[] = [];
+  setTypes: string[] = [];
+  workTypes: string[] = [];
 
+  selectedMaterial = signal('');
+  selectedSetType = signal('');
+  selectedWorkType = signal('');
   products!: any;
   product: any = null;
   showModal = false;
   @Output() productEdited = new EventEmitter<boolean>();
   constructor(
     private productService: ProductService,
+    private masterService: MasterService,
+    private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: object
   ) {
     this.products = this.productService.products;
@@ -28,37 +37,69 @@ export class ProductList implements OnInit {
   // ✅ SEARCH SIGNAL
   searchText = signal('');
   selectedSize = signal('');
+  showFilters = false;
   // ✅ PAGINATION
   currentPage = signal(1);
   pageSize = 9;
-
+  toggleFilters() {
+    this.showFilters = !this.showFilters;
+  }
   // ✅ FILTERED + SORTED DATA
   filteredProducts = computed(() => {
+
     const search = this.searchText().trim().toLowerCase();
     const selectedSize = this.selectedSize().trim().toLowerCase();
 
+    const selectedMaterial = this.selectedMaterial();
+    const selectedSetType = this.selectedSetType();
+    const selectedWorkType = this.selectedWorkType();
+
     return this.products()
       .filter((p: Product) => {
-        // Product must be in stock
-        if (p.totalQuantity <= 0) return false;
 
-        // Search condition
+        // Only show products in stock
+        if (p.totalQuantity <= 0) {
+          return false;
+        }
+
+        // Search
         const matchesSearch =
           !search ||
-          p.name.toLowerCase().includes(search) ||
-          p.code.toLowerCase().includes(search) ||
-          p.color.toLowerCase().includes(search);
+          p.name?.toLowerCase().includes(search) ||
+          p.code?.toLowerCase().includes(search) ||
+          p.color?.toLowerCase().includes(search);
 
-        // Size condition
+        // Size
         const matchesSize =
           !selectedSize ||
           p.sizes?.some(
             (s: any) =>
               s.quantity > 0 &&
-              s.size.toLowerCase() === selectedSize
+              s.size?.toLowerCase() === selectedSize
           );
 
-        return matchesSearch && matchesSize;
+        // Material
+        const matchesMaterial =
+          !selectedMaterial ||
+          p.materialType === selectedMaterial;
+
+        // Set Type
+        const matchesSetType =
+          !selectedSetType ||
+          p.setType === selectedSetType;
+
+        // Work Type
+        const matchesWorkType =
+          !selectedWorkType ||
+          p.workType === selectedWorkType;
+
+        return (
+          matchesSearch &&
+          matchesSize &&
+          matchesMaterial &&
+          matchesSetType &&
+          matchesWorkType
+        );
       })
       .sort(
         (a: Product, b: Product) =>
@@ -66,6 +107,39 @@ export class ProductList implements OnInit {
           new Date(a.createdAt).getTime()
       );
   });
+  // filteredProducts = computed(() => {
+  //   const search = this.searchText().trim().toLowerCase();
+  //   const selectedSize = this.selectedSize().trim().toLowerCase();
+
+  //   return this.products()
+  //     .filter((p: Product) => {
+  //       // Product must be in stock
+  //       if (p.totalQuantity <= 0) return false;
+
+  //       // Search condition
+  //       const matchesSearch =
+  //         !search ||
+  //         p.name.toLowerCase().includes(search) ||
+  //         p.code.toLowerCase().includes(search) ||
+  //         p.color.toLowerCase().includes(search);
+
+  //       // Size condition
+  //       const matchesSize =
+  //         !selectedSize ||
+  //         p.sizes?.some(
+  //           (s: any) =>
+  //             s.quantity > 0 &&
+  //             s.size.toLowerCase() === selectedSize
+  //         );
+
+  //       return matchesSearch && matchesSize;
+  //     })
+  //     .sort(
+  //       (a: Product, b: Product) =>
+  //         new Date(b.createdAt).getTime() -
+  //         new Date(a.createdAt).getTime()
+  //     );
+  // });
   // ✅ PAGINATED DATA
   paginatedProducts = computed(() => {
     const data = this.filteredProducts();
@@ -83,8 +157,74 @@ export class ProductList implements OnInit {
     if (isPlatformBrowser(this.platformId)) {
       this.productService.loadProducts();
     }
+    this.loadMasterData();
+  }
+  onNewFilterChange(): void {
+    this.currentPage.set(1);
+  }
+  loadMasterData() {
+
+    this.masterService.getMasterList().subscribe({
+      next: (result: any) => {
+
+        this.materialTypes = result.materialTypes;
+        this.setTypes = result.setTypes;
+        this.workTypes = result.workTypes;
+        this.cdr.detectChanges();
+
+      },
+      error: (error) => {
+        console.error('Failed to load master data', error);
+      }
+    });
+
+  }
+  clearFilters() {
+    this.searchText.set('');
+    this.selectedSize.set('');
+    this.selectedMaterial.set('');
+    this.selectedSetType.set('');
+    this.selectedWorkType.set('');
+    this.currentPage.set(1);
   }
 
+  applyFilters(): void {
+
+    // const search = this.searchText.
+    //     .toLowerCase();
+
+    this.filteredProducts = this.products.filter((product: any) => {
+
+      // Search
+
+
+      // Material
+      const matchesMaterial =
+        !this.selectedMaterial ||
+        product.materialType === this.selectedMaterial;
+
+
+      // Set Type
+      const matchesSetType =
+        !this.selectedSetType ||
+        product.setType === this.selectedSetType;
+
+
+      // Work Type
+      const matchesWorkType =
+        !this.selectedWorkType ||
+        product.workType === this.selectedWorkType;
+
+
+      return (
+        matchesMaterial &&
+        matchesSetType &&
+        matchesWorkType
+      );
+
+    });
+
+  }
   // ✅ SEARCH HANDLER
   onSearch(value: string) {
     this.searchText.set(value);
@@ -137,6 +277,9 @@ export interface Product {
   sellingPrice: number;
   totalQuantity: number;
   createdAt: string;
+  materialType: string;
+  setType: string;
+  workType: string;
   sizes: {
     size: string;
     quantity: number;

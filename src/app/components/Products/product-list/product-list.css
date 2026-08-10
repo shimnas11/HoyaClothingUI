@@ -198,7 +198,30 @@ color: red;
   /* gap: 10px; */
   margin-bottom: 15px;
 }
+.filter-icon-btn {
+    position: relative;
 
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #ddd;
+    border-radius: 8px;
+
+    background: white;
+    cursor: pointer;
+}
+
+.filter-icon-btn mat-icon {
+    font-size: 22px;
+}
+
+.filter-icon-btn:hover {
+    background: #f5f5f5;
+}
 .search-row input {
   flex: 1;
   padding: 10px;
@@ -233,4 +256,196 @@ color: red;
    font-size: 11px;
 }
 }
+/* ================================
+   FILTER SECTION
+================================ */
 
+.filters {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    margin: 15px 0;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Filter Dropdowns */
+.filters select {
+    min-width: 170px;
+    height: 42px;
+    padding: 0 38px 0 12px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+
+    background-color: #ffffff;
+    color: #374151;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+/* Hover */
+.filters select:hover {
+    border-color: #9ca3af;
+}
+
+/* Focus */
+.filters select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+/* Clear Button */
+.filters button {
+    height: 42px;
+    padding: 0 18px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #f3f4f6;
+    color: #374151;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.filters button:hover {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+
+/* ================================
+   SEARCH ROW
+================================ */
+
+.search-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.search-row input {
+    flex: 1;
+    min-width: 220px;
+    height: 42px;
+
+    padding: 0 14px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+
+    font-size: 14px;
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.search-row input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.search-row select {
+    width: 150px;
+    height: 42px;
+
+    padding: 0 12px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+}
+
+.search-row select:focus {
+    border-color: #2563eb;
+}
+
+
+/* ================================
+   MOBILE
+================================ */
+
+@media (max-width: 768px) {
+
+    .search-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .search-row input {
+        width: 100%;
+        min-width: unset;
+        box-sizing: border-box;
+    }
+
+    .search-row select {
+        width: 100%;
+    }
+
+    .filters {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .filters select {
+        width: 100%;
+        min-width: unset;
+        box-sizing: border-box;
+    }
+
+    .filters button {
+        width: 100%;
+    }
+}
+
+
+/* ================================
+   SMALL PHONES
+================================ */
+
+@media (max-width: 480px) {
+
+    .filters {
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    .filters select,
+    .filters button,
+    .search-row input,
+    .search-row select {
+        height: 40px;
+        font-size: 13px;
+    }
+}

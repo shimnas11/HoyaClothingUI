@@ -14,7 +14,87 @@
             <option value="2XL">2XL</option>
             <option value="3XL">3XL</option>
         </select>
+        <button type="button" class="filter-icon-btn" (click)="toggleFilters()">
+
+            <mat-icon>filter_list</mat-icon>
+
+            <span class="filter-count" *ngIf="
+                selectedMaterial() ||
+                selectedSetType() ||
+                selectedWorkType()
+            ">
+
+                {{
+                (selectedMaterial() ? 1 : 0) +
+                (selectedSetType() ? 1 : 0) +
+                (selectedWorkType() ? 1 : 0)
+                }}
+
+            </span>
+
+        </button>
     </div>
+
+
+    <div class="filters" *ngIf="showFilters">
+
+        <!-- Search -->
+
+
+
+        <!-- Material -->
+        <select [ngModel]="selectedMaterial()" (ngModelChange)="selectedMaterial.set($event); currentPage.set(1)">
+
+            <option value="">All Materials</option>
+
+            <option *ngFor="let material of materialTypes" [value]="material">
+
+                {{ material }}
+
+            </option>
+
+        </select>
+
+
+        <!-- Set Type -->
+        <select [ngModel]="selectedSetType()" (ngModelChange)="selectedSetType.set($event); currentPage.set(1)">
+
+            <option value="">All Set Types</option>
+
+            <option *ngFor="let type of setTypes" [value]="type">
+
+                {{ type }}
+
+            </option>
+
+        </select>
+
+
+        <!-- Work Type -->
+        <select [ngModel]="selectedWorkType()" (ngModelChange)="selectedWorkType.set($event); currentPage.set(1)">
+
+            <option value="">All Work Types</option>
+
+            <option *ngFor="let work of workTypes" [value]="work">
+
+                {{ work }}
+
+            </option>
+
+        </select>
+
+
+        <!-- Clear -->
+        <button type="button" (click)="clearFilters()">
+
+            Clear Filters
+
+        </button>
+
+    </div>
+
+
+
 
     <div *ngIf="products().length === 0" class="loading">
         Loading products...
