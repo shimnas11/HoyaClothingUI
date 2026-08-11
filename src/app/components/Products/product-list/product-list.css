@@ -306,6 +306,7 @@ color: red;
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
+
 /* Clear Button */
 .filters button {
     height: 42px;
@@ -446,6 +447,11 @@ color: red;
     .search-row input,
     .search-row select {
         height: 40px;
+        font-size: 13px;
+    }
+    .search-input{
+        padding: 8px;
+         min-height: 40px;
         font-size: 13px;
     }
 }
