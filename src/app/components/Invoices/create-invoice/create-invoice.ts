@@ -27,7 +27,9 @@ export class CreateInvoice implements OnInit {
   invoiceForm!: FormGroup;
   selectionForm!: FormGroup;
   productSearch: any;
-
+  totalPrice = 0;
+  netPrice = 0;
+  discount = 0;
   @Input() exhibitionId!: string;
   @Output() modalClose = new EventEmitter<boolean>();
 
@@ -124,7 +126,7 @@ export class CreateInvoice implements OnInit {
     this.filteredProducts = [];
   }
   updateNetAmount() {
-    const total = this.totalAmount();
+    const total = this.totalPrice;
 
     this.invoiceForm.patchValue(
       {
@@ -195,6 +197,7 @@ export class CreateInvoice implements OnInit {
     }
 
     this.selectionForm.reset({ quantity: 1 });
+    this.totalAmount();
     this.selectedProduct = null;
     this.updateNetAmount();
   }
@@ -219,6 +222,7 @@ export class CreateInvoice implements OnInit {
     }
 
     this.products.removeAt(index);
+    this.totalAmount();
     this.updateNetAmount();
     event.stopPropagation();
   }
@@ -229,8 +233,20 @@ export class CreateInvoice implements OnInit {
   }
 
   totalAmount() {
-    return this.products.controls.reduce((sum, p) =>
-      sum + (p.value.price * p.value.quantity), 0);
+    this.totalPrice =
+      this.products.controls.reduce((sum, p) =>
+        sum + (p.value.price * p.value.quantity), 0);
+    this.netPrice = this.totalPrice;
+  }
+  onNetAmountChange() {
+    const netAmount =
+      Number(this.invoiceForm.get('netAmount')?.value) || 0;
+
+    const discount = this.totalPrice - netAmount;
+    this.discount = discount;
+
+    console.log('Net Amount:', netAmount);
+    console.log('Discount:', discount);
   }
 
   netAmount() {
@@ -239,7 +255,7 @@ export class CreateInvoice implements OnInit {
 
   calculatedDiscount(): number {
 
-    const total = this.totalAmount();
+    const total = this.totalPrice;
     const net = this.netAmount();
 
     if (net > total) {
@@ -260,7 +276,7 @@ export class CreateInvoice implements OnInit {
     const payload = {
       netAmount: this.netAmount(),
       exhibitionId: this.exhibitionId || '',
-      discount: this.calculatedDiscount(),
+      discount: this.discount,
       paymentMode: this.invoiceForm.value.paymentMode,
       products: this.products.controls.map(p => ({
         productId: p.value.productId,

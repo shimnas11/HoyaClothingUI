@@ -96,15 +96,16 @@
     </div> -->
 
     <div class="totals">
-      <div>Total: ₹{{ totalAmount() }}</div>
+      <div>Total: ₹{{ netPrice }}</div>
 
       <div class="net-input">
         <label>Net Amount</label>
-        <input type="number" formControlName="netAmount" class="discount-input" placeholder="Enter final amount" />
+        <input type="number" formControlName="netAmount" class="discount-input" (input)="onNetAmountChange()"
+          placeholder="Enter final amount" />
       </div>
 
       <div class="discount-display">
-        Discount: ₹{{ calculatedDiscount() }}
+        Discount: ₹{{ discount }}
       </div>
     </div>
 
