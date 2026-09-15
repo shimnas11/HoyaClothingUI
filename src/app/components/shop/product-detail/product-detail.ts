@@ -98,14 +98,19 @@ export class ProductDetail implements OnInit {
     const normalized = imageUrl.replace(/\\/g, '/');
 
     if (normalized.startsWith('http://') || normalized.startsWith('https://')) {
-      return normalized;
+      return normalized.replace(/\/api(?=\/)/i, '');
     }
 
     const match = normalized.match(/\/images\/.*$/i);
     const publicPath = match ? match[0] : normalized.replace(/^.*?(\/images\/.*)$/, '$1');
     const cleanPath = publicPath.startsWith('/') ? publicPath : `/${publicPath}`;
 
-    return `${environment.apiUrl.replace(/\/api$/, '')}${cleanPath}`;
+    const baseUrl = environment.apiUrl
+      .replace(/\/api\/?$/, '')
+      .replace(/\/$/, '');
+    console.log('Product Image URL:', `${baseUrl}${cleanPath}`);
+    return `${baseUrl}${cleanPath}`;
+    // return `${environment.apiUrl.replace(/\/api$/, '')}${cleanPath}`;
   }
 
   selectImage(index: number): void {
