@@ -1,70 +1,21 @@
-import { Routes } from '@angular/router';
-import { ProductLanding } from './components/Products/product-landing/product-landing';
-import { InvoiceList } from './components/Invoices/invoice-list/invoice-list';
-import { DashboardComponent } from './components/Dashboard/dashboard/dashboard';
 import { LoginComponent } from './components/Users/login/login';
-import { authGuard } from './guards/auth-guard';
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout';
-import { MainLayoutComponent } from './layout/main-layout/main-layout';
-import { ExhibitionLanding } from './components/Exhibitions/exhibition-landing/exhibition-landing';
-import { DetailExhition } from './components/Exhibitions/detail-exhibition/detail-exhition';
-import { ProductDetailComponent } from './components/Products/product-detail/product-detail';
-import { DamagedProducts } from './components/Products/damaged-products/damaged-products';
-import { AdditionalExpense } from './components/Masters/AdditionalExpenses/additional-expense/additional-expense';
-import { InvoiceDetailComponent } from './components/Invoices/invoice-details/invoice-details';
-
-
 export const routes = [
 
     // 🧩 Main layout (with sidebar)
     {
         path: '',
-        component: MainLayoutComponent,
-        canActivate: [authGuard],
-        children: [
-            {
-                path: 'products',
-                component: ProductLanding, renderMode: 'client'
-            },
-            {
-                path: 'products/:id',
-                component: ProductDetailComponent
-            },
-            {
-                path: 'invoices',
-                component: InvoiceList, renderMode: 'client'
-            },
-            {
-                path: 'dashboard',
-                component: DashboardComponent, renderMode: 'client'
-            },
-            {
-                path: 'exhibitions',
-                component: ExhibitionLanding, renderMode: 'client'
-            },
-            {
-                path: 'details/:id',
-                component: DetailExhition,
-                renderMode: 'client'
-            },
-            {
-                path: 'damages',
-                component: DamagedProducts,
-                renderMode: 'client'
-            },
-            {
-                path: 'additional-expenses',
-                component: AdditionalExpense,
-                renderMode: 'client'
-            },
-            {
-                path: 'invoices/:id',
-                component: InvoiceDetailComponent,
-                renderMode: 'client'
-            }
-        ]
+        loadChildren: () =>
+            import('./components/Admin/admin.routes')
+                .then(m => m.ADMIN_ROUTES)
     },
-    // 🔐 Auth layout (no sidebar)
+    {
+        path: 'shop',
+        loadChildren: () =>
+            import('./components/shop/shop.routes')
+                .then(m => m.SHOP_ROUTES)
+    },
+
 
     {
         path: '',

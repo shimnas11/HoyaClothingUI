@@ -3,7 +3,7 @@ import { Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { CreateDamage, Product } from '../models/product.model';
-import { DamagedProducts } from '../components/Products/damaged-products/damaged-products';
+import { DamagedProducts } from '../components/Admin/Products/damaged-products/damaged-products';
 
 @Injectable({
   providedIn: 'root',
@@ -69,4 +69,20 @@ export class ProductService {
     );
   }
 
+  uploadProductImages(
+    productId: string,
+    files: File[]
+  ): Observable<any> {
+
+    const formData = new FormData();
+
+    files.forEach(file => {
+      formData.append('images', file);
+    });
+
+    return this.http.post(
+      `${this.apiUrl}/products/${productId}/images`,
+      formData
+    );
+  }
 }

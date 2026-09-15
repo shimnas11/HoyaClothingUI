@@ -1,0 +1,412 @@
+/* =========================================================
+   HOYA CLOTHING - SHOP LAYOUT
+   ========================================================= */
+
+
+/* =========================================================
+   SHOP SHELL
+   ========================================================= */
+
+   .shop-shell {
+    display: flex;
+    flex-direction: column;
+
+    min-height: 100dvh;
+    width: 100%;
+
+    background: var(--shop-color-bg);
+    color: var(--shop-color-ink);
+
+    font-family: var(--shop-font-body);
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.shop-header {
+    position: sticky;
+
+    top: 0;
+    z-index: 20;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    height: var(--shop-header-height);
+
+    padding: 0 16px;
+
+    background: var(--shop-color-surface);
+
+    border-bottom: 1px solid var(--shop-color-border);
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   HEADER BRAND
+   ========================================================= */
+
+.shop-header__brand {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    min-width: 0;
+
+    text-decoration: none;
+
+    color: inherit;
+}
+
+
+/* Hoya logo circle */
+
+.shop-header__mark {
+    flex: 0 0 30px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 30px;
+    height: 30px;
+
+    border-radius: 50%;
+
+    background: var(--shop-color-accent);
+
+    color: #ffffff;
+
+    font-family: var(--shop-font-display);
+
+    font-size: 15px;
+    font-weight: 600;
+
+    line-height: 1;
+}
+
+
+/* Brand name */
+
+.shop-header__name {
+    min-width: 0;
+
+    font-family: var(--shop-font-display);
+
+    font-size: 17px;
+    font-weight: 600;
+
+    letter-spacing: 0.01em;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   HEADER ACTIONS
+   ========================================================= */
+
+.shop-header__actions {
+    display: flex;
+    align-items: center;
+
+    gap: 2px;
+
+    flex: 0 0 auto;
+}
+
+
+/* Header icon buttons */
+
+.shop-header__icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 40px;
+    height: 40px;
+
+    padding: 0;
+
+    border: none;
+
+    background: transparent;
+
+    border-radius: 50%;
+
+    color: var(--shop-color-ink);
+
+    cursor: pointer;
+
+    text-decoration: none;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+
+/* Header SVG */
+
+.shop-header__icon-btn svg {
+    width: 21px;
+    height: 21px;
+
+    display: block;
+}
+
+
+/* Header button active */
+
+.shop-header__icon-btn:active {
+    background: var(--shop-color-accent-soft);
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+   ========================================================= */
+
+.shop-content {
+    flex: 1;
+
+    width: 100%;
+    max-width: var(--shop-content-max-width);
+
+    margin: 0 auto;
+
+    padding:
+        16px
+        16px
+        calc(
+            var(--shop-bottom-nav-height)
+            + var(--shop-safe-bottom)
+            + 24px
+        );
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   MOBILE BOTTOM NAVIGATION
+   ========================================================= */
+
+.shop-bottom-nav {
+    position: fixed;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    z-index: 30;
+
+    display: flex;
+
+    width: 100%;
+
+    height:
+        calc(
+            var(--shop-bottom-nav-height)
+            + var(--shop-safe-bottom)
+        );
+
+    padding-bottom: var(--shop-safe-bottom);
+
+    background: var(--shop-color-surface);
+
+    border-top: 1px solid var(--shop-color-border);
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   BOTTOM NAV ITEM
+   ========================================================= */
+
+.shop-bottom-nav__item {
+    position: relative;
+
+    flex: 1;
+
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 3px;
+
+    padding: 0;
+
+    text-decoration: none;
+
+    color: var(--shop-color-ink-muted);
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+
+/* =========================================================
+   BOTTOM NAV ICON CONTAINER
+   IMPORTANT:
+   Keeps Home / Shop / Cart / Account icons consistent.
+   ========================================================= */
+
+.shop-bottom-nav__icon {
+    width: 22px;
+    height: 22px;
+
+    flex: 0 0 22px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* =========================================================
+   BOTTOM NAV SVG
+   ========================================================= */
+
+.shop-bottom-nav__icon svg {
+    display: block;
+
+    width: 20px;
+    height: 20px;
+
+    max-width: 20px;
+    max-height: 20px;
+
+    flex: 0 0 20px;
+}
+
+
+/* =========================================================
+   BOTTOM NAV LABEL
+   ========================================================= */
+
+.shop-bottom-nav__label {
+    display: block;
+
+    font-size: 11px;
+    font-weight: 500;
+
+    line-height: 14px;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   ACTIVE NAV ITEM
+   ========================================================= */
+
+.shop-bottom-nav__item.is-active {
+    color: var(--shop-color-accent);
+}
+
+
+/* Small gold dot above active icon */
+
+.shop-bottom-nav__item.is-active::before {
+    content: '';
+
+    position: absolute;
+
+    top: 6px;
+
+    width: 4px;
+    height: 4px;
+
+    border-radius: 50%;
+
+    background: var(--shop-color-gold);
+}
+
+
+/* =========================================================
+   TOUCH FEEDBACK
+   ========================================================= */
+
+.shop-bottom-nav__item:active {
+    opacity: 0.75;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (min-width: 600px) {
+
+    .shop-header {
+        padding: 0 24px;
+    }
+
+    .shop-content {
+        padding:
+            20px
+            24px
+            40px;
+    }
+
+}
+
+
+/* =========================================================
+   DESKTOP
+   ========================================================= */
+
+@media (min-width: 1024px) {
+
+    .shop-header {
+        padding: 0 32px;
+    }
+
+
+    .shop-content {
+        padding:
+            24px
+            32px
+            40px;
+    }
+
+
+    /*
+       Bottom navigation is mobile-only.
+       Desktop navigation can later be moved
+       into the header.
+    */
+
+    .shop-bottom-nav {
+        display: none;
+    }
+
+}
+
+
+/* =========================================================
+   LARGE DESKTOP
+   ========================================================= */
+
+@media (min-width: 1440px) {
+
+    .shop-content {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+
+}

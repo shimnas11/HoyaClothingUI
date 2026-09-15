@@ -1,0 +1,270 @@
+<section class="product-details" *ngIf="product">
+
+
+    <!-- =========================
+         PRODUCT GALLERY
+    ========================== -->
+    <div class="product-details__gallery">
+
+        <div class="product-details__gallery-main">
+
+            <!-- Main Image -->
+            <img *ngIf="product && product.images && product.images.length"
+                [src]="getImageUrl(product.images[activeImageIndex]?.imageUrl ?? '')" [alt]="product.name"
+                class="product-details__gallery-image" loading="eager" />
+
+            <!-- Placeholder -->
+            <div *ngIf="!product || !product.images || !product.images.length"
+                class="product-details__gallery-placeholder">
+
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+
+                    <rect x="3" y="4" width="18" height="16" rx="2" />
+
+                    <path d="M3 15.5 8.5 10l4 4 3-3L21 15.5" />
+
+                    <circle cx="8" cy="8.5" r="1.4" fill="currentColor" stroke="none" />
+
+                </svg>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             IMAGE THUMBNAILS
+        ========================== -->
+        <div class="product-details__gallery-thumbnails" *ngIf="product && product.images && product.images.length > 1">
+
+            <button *ngFor="let image of product.images; let i = index" type="button" class="product-details__thumbnail"
+                [class.is-active]="i === activeImageIndex" (click)="selectImage(i)"
+                [attr.aria-label]="'View image ' + (i + 1)">
+
+                <img [src]="getImageUrl(image.imageUrl)" [alt]="product.name + ' image ' + (i + 1)" loading="lazy" />
+
+            </button>
+
+        </div>
+
+
+        <!-- =========================
+             IMAGE DOTS - MOBILE
+        ========================== -->
+        <div class="product-details__gallery-dots" *ngIf="product && product.images && product.images.length > 1">
+
+            <button *ngFor="let image of product.images; let i = index" type="button" class="product-details__dot"
+                [class.is-active]="i === activeImageIndex" [attr.aria-label]="'View image ' + (i + 1)"
+                (click)="selectImage(i)">
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         PRODUCT HEADER
+    ========================== -->
+    <div class="product-details__header">
+
+        <div class="product-details__heading">
+
+            <p class="product-details__code">
+                {{ product.code }}
+            </p>
+
+            <h1 class="product-details__name">
+                {{ product.name }}
+            </h1>
+
+            <p class="product-details__color" *ngIf="product.color">
+
+                {{ product.color }}
+
+            </p>
+
+        </div>
+
+
+        <!-- Wishlist -->
+        <button class="product-details__favorite" type="button" [class.is-active]="product.isFavorite"
+            [attr.aria-pressed]="!!product.isFavorite" [attr.aria-label]="
+                product.isFavorite
+                    ? 'Remove from wishlist'
+                    : 'Add to wishlist'
+            " (click)="toggleFavorite()">
+
+            <svg viewBox="0 0 24 24" [attr.fill]="
+                    product.isFavorite
+                        ? 'currentColor'
+                        : 'none'
+                " stroke="currentColor" stroke-width="1.8">
+
+                <path
+                    d="M12 20.5s-7.2-4.6-9.6-9.1C.9 8.1 2.4 4.8 5.6 4.1c2-.4 3.9.5 5 2.1 1.1-1.6 3-2.5 5-2.1 3.2.7 4.7 4 3.2 7.3-2.4 4.5-9.6 9.1-9.6 9.1Z" />
+
+            </svg>
+
+        </button>
+
+    </div>
+
+
+    <!-- =========================
+         PRICE
+    ========================== -->
+    <p class="product-details__price">
+
+        <span class="product-details__price-current">
+            {{ product.sellingPrice
+            | currency:'INR':'symbol':'1.0-0':'en-IN' }}
+        </span>
+
+    </p>
+
+
+    <!-- =========================
+         DESCRIPTION
+    ========================== -->
+    <p class="product-details__description" *ngIf="product.description">
+
+        {{ product.description }}
+
+    </p>
+
+
+    <!-- =========================
+         STOCK
+    ========================== -->
+    <div class="product-details__stock">
+
+        <span *ngIf="availableStock > 0" class="product-details__stock--available">
+
+            {{ availableStock }} available
+
+        </span>
+
+        <span *ngIf="availableStock === 0" class="product-details__stock--out">
+
+            Out of stock
+
+        </span>
+
+    </div>
+
+
+    <!-- =========================
+         SIZE
+    ========================== -->
+    <div class="product-details__section" *ngIf="product && product.sizes && product.sizes.length">
+
+        <p class="product-details__section-label">
+            Size
+        </p>
+
+
+        <div class="product-details__sizes">
+
+            <button *ngFor="let item of product.sizes" type="button" class="product-details__size" [class.is-selected]="
+                    item.size === selectedSize
+                " [class.is-disabled]="item.quantity <= 0" [disabled]="item.quantity <= 0"
+                (click)="selectSize(item.size)">
+
+                <span>
+                    {{ item.size }}
+                </span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         QUANTITY
+    ========================== -->
+    <div class="product-details__section" *ngIf="selectedSize">
+
+        <p class="product-details__section-label">
+            Quantity
+        </p>
+
+
+        <div class="product-details__quantity">
+
+            <button type="button" (click)="decreaseQuantity()" [disabled]="quantity <= 1"
+                aria-label="Decrease quantity">
+
+                −
+
+            </button>
+
+
+            <span>
+                {{ quantity }}
+            </span>
+
+
+            <button type="button" (click)="increaseQuantity()" [disabled]="quantity >= availableStock"
+                aria-label="Increase quantity">
+
+                +
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         RELATED PRODUCTS
+    ========================== -->
+    <section class="product-details__related" *ngIf="relatedProducts.length">
+
+        <h2 class="product-details__related-title">
+            You may also like
+        </h2>
+
+
+        <div class="product-details__related-grid">
+
+            <a *ngFor="let item of relatedProducts" [routerLink]="['/shop/products', item.id]"
+                class="product-details__related-link">
+
+                <app-product-card [product]="item" (favoriteToggle)="onRelatedFavoriteToggle($event)">
+                </app-product-card>
+            </a>
+
+        </div>
+
+    </section>
+
+</section>
+
+
+<!-- =========================
+     ADD TO CART
+========================== -->
+<div class="product-details__cta" *ngIf="product">
+
+    <button type="button" class="product-details__add-to-cart" [class.is-added]="justAdded" [disabled]="
+            !selectedSize ||
+            availableStock <= 0
+        " (click)="onAddToCart()">
+
+        <ng-container *ngIf="!justAdded; else addedTpl">
+
+            {{
+            availableStock <= 0 ? 'Out of stock' : selectedSize ? 'Add to Cart' : 'Select a size' }} </ng-container>
+
+
+                <ng-template #addedTpl>
+                    Added to Cart ✓
+                </ng-template>
+
+    </button>
+
+</div>

@@ -1,0 +1,111 @@
+<section class="product-list">
+
+    <h1 class="product-list__title">
+        Products
+    </h1>
+
+    <!-- Search -->
+    <label class="product-list__search">
+
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+
+            <circle cx="11" cy="11" r="7" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+
+        </svg>
+
+        <input type="search" placeholder="Search products" aria-label="Search products" />
+
+    </label>
+
+
+    <!-- Toolbar -->
+    <div class="product-list__toolbar">
+
+        <button class="product-list__toolbar-btn" type="button" (click)="openSheet('filter')">
+
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+
+                <line x1="4" y1="6" x2="20" y2="6" />
+                <line x1="7" y1="12" x2="17" y2="12" />
+                <line x1="10" y1="18" x2="14" y2="18" />
+
+            </svg>
+
+            Filter
+
+        </button>
+
+
+        <button class="product-list__toolbar-btn" type="button" (click)="openSheet('sort')">
+
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+
+                <path d="M7 4v16M7 4 3.5 7.5M7 4l3.5 3.5" />
+                <path d="M17 20V4m0 16 3.5-3.5M17 20l-3.5-3.5" />
+
+            </svg>
+
+            Sort
+
+        </button>
+
+    </div>
+
+
+    <!-- Products -->
+    <div class="product-list__grid">
+
+        <app-product-card *ngFor="let product of products()" [product]="product"
+            (favoriteToggle)="onFavoriteToggle($event)">
+        </app-product-card>
+
+    </div>
+
+</section>
+
+
+<!-- Bottom sheet -->
+<div class="product-sheet" *ngIf="activeSheet" (click)="closeSheet()">
+
+    <div class="product-sheet__panel" (click)="$event.stopPropagation()">
+
+        <div class="product-sheet__handle" aria-hidden="true">
+        </div>
+
+
+        <div class="product-sheet__header">
+
+            <h2>
+                {{ activeSheet === 'filter' ? 'Filter' : 'Sort by' }}
+            </h2>
+
+            <button type="button" class="product-sheet__close" (click)="closeSheet()" aria-label="Close">
+
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+
+                    <line x1="5" y1="5" x2="19" y2="19" />
+                    <line x1="19" y1="5" x2="5" y2="19" />
+
+                </svg>
+
+            </button>
+
+        </div>
+
+
+        <p class="product-sheet__placeholder">
+
+            {{
+            activeSheet === 'filter'
+            ? 'Filter options'
+            : 'Sort options'
+            }}
+
+            will go here once product data is wired up.
+
+        </p>
+
+    </div>
+
+</div>

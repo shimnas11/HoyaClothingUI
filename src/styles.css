@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import 'ngx-toastr/toastr';
-
+@import './../src/app/styles/shop-tokens.css';
 .toast-success {
   background-color: #22c55e !important;
 }

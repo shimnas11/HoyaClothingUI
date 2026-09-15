@@ -1,0 +1,48 @@
+:root {
+
+  --shop-color-bg: #f7f5f0;
+
+  --shop-color-surface: #ffffff;
+
+  --shop-color-border: #e8e2d8;
+
+
+  --shop-color-ink: #221d1a;
+
+  --shop-color-ink-muted: #8a8177;
+
+
+  --shop-color-accent: #7a2e3a;
+
+  --shop-color-accent-soft: #f3e4e6;
+
+  --shop-color-gold: #b98a22;
+
+
+  --shop-font-display:
+      'Fraunces',
+      Georgia,
+      'Times New Roman',
+      serif;
+
+  --shop-font-body:
+      'Inter',
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      sans-serif;
+
+
+  --shop-header-height: 60px;
+
+  --shop-bottom-nav-height: 64px;
+
+  --shop-safe-bottom:
+      env(safe-area-inset-bottom, 0px);
+
+  --shop-content-max-width: 1200px;
+
+  --shop-radius-card: 14px;
+
+  --shop-radius-pill: 999px;
+}

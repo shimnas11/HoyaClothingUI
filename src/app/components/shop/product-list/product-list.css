@@ -1,0 +1,322 @@
+/* =========================================================
+   SHOP PRODUCT LIST
+   ========================================================= */
+
+   .product-list {
+    width: 100%;
+    color: var(--shop-color-ink);
+}
+
+
+/* =========================================================
+   TITLE
+   ========================================================= */
+
+.product-list__title {
+    margin: 4px 0 14px;
+
+    font-family: var(--shop-font-display);
+    font-size: 22px;
+    font-weight: 600;
+
+    color: var(--shop-color-ink);
+}
+
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+.product-list__search {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    width: 100%;
+    max-width: 420px;
+
+    height: 44px;
+
+    padding: 0 14px;
+    margin-bottom: 12px;
+
+    background: var(--shop-color-surface);
+
+    border: 1px solid var(--shop-color-border);
+    border-radius: var(--shop-radius-pill);
+
+    color: var(--shop-color-ink-muted);
+
+    box-sizing: border-box;
+}
+
+
+.product-list__search svg {
+    width: 18px;
+    height: 18px;
+
+    flex: none;
+}
+
+
+.product-list__search input {
+    flex: 1;
+
+    min-width: 0;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    font-size: 14px;
+    font-family: var(--shop-font-body);
+
+    color: var(--shop-color-ink);
+}
+
+
+.product-list__search input::placeholder {
+    color: var(--shop-color-ink-muted);
+}
+
+
+/* =========================================================
+   TOOLBAR
+   ========================================================= */
+
+.product-list__toolbar {
+    display: flex;
+
+    gap: 10px;
+
+    margin-bottom: 16px;
+}
+
+
+.product-list__toolbar-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    padding: 8px 14px;
+
+    border: 1px solid var(--shop-color-border);
+    border-radius: var(--shop-radius-pill);
+
+    background: var(--shop-color-surface);
+
+    color: var(--shop-color-ink);
+
+    font-family: var(--shop-font-body);
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        transform 0.15s ease;
+}
+
+
+.product-list__toolbar-btn svg {
+    width: 15px;
+    height: 15px;
+}
+
+
+.product-list__toolbar-btn:hover {
+    border-color: var(--shop-color-accent);
+}
+
+
+.product-list__toolbar-btn:active {
+    background: var(--shop-color-accent-soft);
+    border-color: var(--shop-color-accent-soft);
+
+    transform: scale(0.97);
+}
+
+
+/* =========================================================
+   PRODUCT GRID
+   ========================================================= */
+
+.product-list__grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+
+    width: 100%;
+}
+
+
+/* Tablet */
+
+@media (min-width: 600px) {
+
+    .product-list__grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+
+        gap: 16px;
+    }
+
+}
+
+
+/* Desktop */
+
+@media (min-width: 1024px) {
+
+    .product-list__grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+
+        gap: 20px;
+    }
+
+}
+
+
+/* Large desktop */
+
+@media (min-width: 1400px) {
+
+    .product-list__grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+
+        gap: 24px;
+    }
+
+}
+
+
+/* =========================================================
+   BOTTOM SHEET
+   ========================================================= */
+
+.product-sheet {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 100;
+
+    display: flex;
+    align-items: flex-end;
+
+    background: rgba(34, 29, 26, 0.4);
+}
+
+
+.product-sheet__panel {
+    width: 100%;
+
+    max-width: var(--shop-content-max-width);
+
+    margin: 0 auto;
+
+    padding: 10px 20px
+        calc(24px + var(--shop-safe-bottom));
+
+    background: var(--shop-color-surface);
+
+    border-radius: 20px 20px 0 0;
+
+    animation: shop-sheet-in 0.18s ease-out;
+}
+
+
+.product-sheet__handle {
+    width: 36px;
+    height: 4px;
+
+    margin: 4px auto 14px;
+
+    border-radius: var(--shop-radius-pill);
+
+    background: var(--shop-color-border);
+}
+
+
+.product-sheet__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 8px;
+}
+
+
+.product-sheet__header h2 {
+    margin: 0;
+
+    font-family: var(--shop-font-display);
+
+    font-size: 17px;
+    font-weight: 600;
+
+    color: var(--shop-color-ink);
+}
+
+
+.product-sheet__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 32px;
+    height: 32px;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background: var(--shop-color-bg);
+
+    color: var(--shop-color-ink-muted);
+
+    cursor: pointer;
+}
+
+
+.product-sheet__close svg {
+    width: 15px;
+    height: 15px;
+}
+
+
+.product-sheet__placeholder {
+    margin: 8px 0 4px;
+
+    font-size: 13.5px;
+    line-height: 1.6;
+
+    color: var(--shop-color-ink-muted);
+}
+
+
+/* =========================================================
+   ANIMATION
+   ========================================================= */
+
+@keyframes shop-sheet-in {
+
+    from {
+        transform: translateY(16px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+}
